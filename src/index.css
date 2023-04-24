@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    background-color: none;
+    width: 4px;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: 4px;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    display: block;
+    cursor: pointer;
+    width: 4px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    display: block;
+    cursor: pointer;
+    background-color: rgba(229, 231, 235, var(--bg-opacity));
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    display: block;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #a0aec0;
+  }
+}

@@ -24,7 +24,7 @@ export const useUpload = <T>(config: ApiConfig<T>) => {
         if (xhr.status === 200) {
           resolve(JSON.parse(xhr.response));
         } else {
-          if (xhr.status == 400) {
+          if (xhr.status === 400) {
             setToast(xhr.responseText, "error");
           } else {
             console.error(xhr.responseText);

@@ -15,28 +15,28 @@ const MessageText: Component<{ item: MessageInfo }> = (props) => {
       when={state.user.id === props.item.sid}
       fallback={
         <div class="flex">
-          <div class="flex w-5/6 items-start space-x-2">
+          <div class="flex items-start space-x-2">
             <Avatar src={props.item.avatar} class="h-8 w-8 shrink-0 rounded-full" />
             <div class="grow">
               <p class="mb-2 w-fit text-sm font-semibold text-gray-700">
                 {props.item.name}
                 <span class="ml-2 text-xs text-gray-400">{fmtSendTime(props.item.send_at)}</span>
               </p>
-              <div class="w-fit rounded-b-lg rounded-tr-lg bg-white px-3 py-2 text-sm text-gray-700 shadow-sm">{props.item.content}</div>
+              <div class="w-fit max-w-lg break-all rounded-b-lg rounded-tr-lg bg-white px-3 py-2 text-sm text-gray-700 shadow-sm">{props.item.content}</div>
             </div>
           </div>
         </div>
       }
     >
       <div class="flex flex-row-reverse">
-        <div class="flex w-5/6 flex-row-reverse items-start space-x-2 space-x-reverse">
+        <div class="flex flex-row-reverse items-start space-x-2 space-x-reverse">
           <Avatar src={props.item.avatar} class="h-8 w-8 shrink-0 rounded-full" />
           <div class="flex grow flex-col items-end">
             <p class="mb-2 w-fit text-sm font-semibold text-gray-700">
               <span class="mr-2 text-xs text-gray-400">{fmtSendTime(props.item.send_at)}</span>
               {props.item.name}
             </p>
-            <div class="w-fit rounded-b-lg rounded-tl-lg bg-sky-500 px-3 py-2 text-sm text-white shadow-md">{props.item.content}</div>
+            <div class="w-fit max-w-lg break-all rounded-b-lg rounded-tl-lg bg-sky-500 px-3 py-2 text-sm text-white shadow-md">{props.item.content}</div>
           </div>
         </div>
       </div>

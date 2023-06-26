@@ -1,2 +1,2 @@
 # chat
-A chat app with Axum and Solidjs
+A chat client with Solidjs

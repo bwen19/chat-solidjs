@@ -6,7 +6,7 @@ import { useFetchPrivate } from "@/utils/fetch";
 import { useUpload } from "@/utils/upload";
 
 export const useChangeAvatar = () => {
-  const [state, { setUser, setToast }] = useAppContext();
+  const [state, { updateState, setToast }] = useAppContext();
   const { percentage, uploadFile } = useUpload(ChangeAvatarConfig);
 
   const handleChangeAvatar: JSX.EventHandler<HTMLInputElement, Event> = async (ev) => {
@@ -19,7 +19,7 @@ export const useChangeAvatar = () => {
     }
 
     const { avatar } = await uploadFile(avatarFile);
-    setUser({ ...state.user, avatar });
+    updateState({ ...state.user, avatar });
     setToast("头像更新成功", "success");
   };
 
@@ -27,7 +27,7 @@ export const useChangeAvatar = () => {
 };
 
 export const useUpdateProfile = () => {
-  const [state, { setUser, setToast }] = useAppContext();
+  const [state, { updateState, setToast }] = useAppContext();
   const updateUser = useFetchPrivate(UpdateUserConfig);
 
   const [loading, setLoading] = createSignal(false);
@@ -45,7 +45,7 @@ export const useUpdateProfile = () => {
             nickname: fields.nickname || undefined,
             bio: fields.bio || undefined,
           });
-          setUser(resp.user);
+          updateState(resp.user);
           setToast("更改成功", "success");
           onClose();
         } catch (err) {

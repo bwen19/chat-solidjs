@@ -19,8 +19,8 @@ const Messages: Component = () => {
   createEffect(
     on(
       () => homeState.currRoom,
-      () => setContent("")
-    )
+      () => setContent(""),
+    ),
   );
 
   let divRef: HTMLDivElement | undefined;
@@ -40,12 +40,12 @@ const Messages: Component = () => {
 
   return (
     <>
-      <div ref={divRef} class="hover:scrollbar no-scrollbar flex grow flex-col space-y-5 overflow-y-scroll overflow-x-hidden p-3">
+      <div ref={divRef} class="hover:scrollbar no-scrollbar flex grow flex-col space-y-5 overflow-x-hidden overflow-y-scroll p-3">
         <For each={messages()}>{(item) => <MessageItem item={item} />}</For>
       </div>
-      <div class="relative flex h-16 items-center justify-center border-t px-4">
+      <div class="relative flex h-16 shrink-0 items-center justify-center border-t px-4">
         <Show when={percentage() > 0}>
-          <div class="absolute left-5 -top-12 inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full">
+          <div class="absolute -top-12 left-5 inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full">
             <SpinProgress class="h-10 w-10" percent={percentage()} />
             <span class="absolute text-sm text-sky-600">{percentage()}</span>
           </div>

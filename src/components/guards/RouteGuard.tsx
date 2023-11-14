@@ -5,7 +5,7 @@ import useAutoLogin from "./useAutoLogin";
 
 const RouteGuard: Component = () => {
   const [state] = useAppContext();
-  const loading = useAutoLogin();
+  const loading = useAutoLogin(false);
 
   return (
     <Show

@@ -1,5 +1,5 @@
 import { useAppContext } from "@/AppContext";
-import { CreateUserConfig, DeleteUsersConfig, ListUsersConfig, UpdateUserConfig, UpdateUserRequest, UserInfo } from "@/api";
+import { CreateUserConfig, DeleteUserConfig, ListUsersConfig, UpdateUserConfig, UpdateUserRequest, UserInfo } from "@/api";
 import { useFetchPrivate } from "@/utils/fetch";
 import { Accessor, JSX, createEffect, createSignal, on } from "solid-js";
 import { createStore, produce } from "solid-js/store";
@@ -42,7 +42,7 @@ export const useListUsers = () => {
         produce((s) => {
           s.pageId = s.pageId + 1;
           s.status = "Idle";
-        })
+        }),
       );
     }
   };
@@ -55,7 +55,7 @@ export const useListUsers = () => {
         s.pageId = 1;
         s.keyword = keyword ? keyword + "%" : undefined;
         s.status = "Idle";
-      })
+      }),
     );
   };
 
@@ -78,7 +78,7 @@ export const useListUsers = () => {
                 s.data = resp.users;
                 s.total = resp.total;
                 s.status = "Done";
-              })
+              }),
             );
           } catch (err) {
             setUsers(
@@ -86,24 +86,24 @@ export const useListUsers = () => {
                 s.data = [];
                 s.total = 0;
                 s.status = "Failed";
-              })
+              }),
             );
           }
         }
-      }
-    )
+      },
+    ),
   );
 
   return { users, pageInfo, pageDown, pageUp, handleSearch, reload };
 };
 
-export const useDeleteUsers = (cb: Accessor<void>) => {
+export const useDeleteUser = (cb: Accessor<void>) => {
   const [_, { setToast }] = useAppContext();
-  const deleteUsers = useFetchPrivate(DeleteUsersConfig);
+  const deleteUsers = useFetchPrivate(DeleteUserConfig);
 
-  const handleDeleteUsers = async (userId: number) => {
+  const handleDeleteUser = async (userId: number) => {
     try {
-      await deleteUsers({ user_ids: [userId] });
+      await deleteUsers(userId);
       cb();
     } catch (err) {
       if (err instanceof Error) {
@@ -112,7 +112,7 @@ export const useDeleteUsers = (cb: Accessor<void>) => {
     }
   };
 
-  return handleDeleteUsers;
+  return handleDeleteUser;
 };
 
 export const useCreateUser = (cb: Accessor<void>) => {

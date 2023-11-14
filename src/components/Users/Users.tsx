@@ -3,11 +3,11 @@ import { UserInfo } from "@/api";
 import { fmtDate } from "@/utils/time";
 import { Avatar, Confirm, RoleBanner, SearchBox } from "../common";
 import { ActiveSolid, InactiveSolid, TrashSolid } from "../icons";
-import { useDeleteUsers, useListUsers } from "./users.service";
+import { useDeleteUser, useListUsers } from "./users.service";
 import { CreateUserButton, EditUserButton } from "./Users.Widgets";
 
 const UserItem: Component<{ item: UserInfo; reload: Accessor<void> }> = (props) => {
-  const handleDeleteUsers = useDeleteUsers(props.reload);
+  const handleDeleteUser = useDeleteUser(props.reload);
 
   return (
     <tr class="cursor-default bg-white text-gray-700 hover:bg-gray-50">
@@ -31,7 +31,7 @@ const UserItem: Component<{ item: UserInfo; reload: Accessor<void> }> = (props) 
       <td class="px-4 py-3 text-sm text-gray-600">{fmtDate(props.item.create_at)}</td>
       <td class="py-3 px-4">
         <div class="flex items-center">
-          <Confirm onConfirm={() => handleDeleteUsers(props.item.id)}>
+          <Confirm onConfirm={() => handleDeleteUser(props.item.id)}>
             <TrashSolid class="mr-4 h-5 w-5 cursor-pointer text-red-500" />
           </Confirm>
           <EditUserButton user={props.item} reload={props.reload} />

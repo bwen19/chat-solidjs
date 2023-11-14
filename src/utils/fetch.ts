@@ -4,16 +4,16 @@ import useRenewToken from "./useRenewToken";
 
 const handleResponse = async <D>(resp: Response): Promise<D> => {
   if (resp.status === 200) {
-    if (resp.headers.get("Content-Type") === "application/json") {
+    if (resp.headers.get("Content-Type")?.startsWith("application/json")) {
       return resp?.json() as D;
     }
   } else {
     const errMsg = await resp.text();
-    if (resp.status == 400) {
-      throw new Error(errMsg);
-    } else {
+    if (resp.status == 500) {
       console.error(errMsg);
       throw new Error();
+    } else {
+      throw new Error(errMsg);
     }
   }
 };
@@ -24,7 +24,7 @@ export const useFetchAuth = <T, P>(config: ApiConfig<T, P>) => {
       method: config.method,
       headers: { "Content-Type": "application/json" },
       credentials: "same-origin",
-      body: JSON.stringify(param),
+      body: param && JSON.stringify(param),
     }).then((resp) => handleResponse<T>(resp));
   };
   return fetchAuth;
@@ -49,9 +49,14 @@ export const useFetchPrivate = <T, P>(config: ApiConfig<T, P>) => {
 
   const fetchPrivate = async (param: P): Promise<T> => {
     if (config.method === "GET") {
-      const query = new URLSearchParams(Object.entries(param).filter((v) => typeof v[1] !== "undefined")).toString();
-      url = `${config.url}?${query}`;
-      body = undefined;
+      if (config.path) {
+        url = `${config.url}/${param}`;
+        body = undefined;
+      } else {
+        const query = new URLSearchParams(Object.entries(param).filter((v) => typeof v[1] !== "undefined")).toString();
+        url = `${config.url}?${query}`;
+        body = undefined;
+      }
     } else {
       body = JSON.stringify(param);
     }

@@ -41,7 +41,6 @@ const FriendPage: Component = () => {
               <div class="pb-8 pt-14 text-center">
                 <p class="text-lg font-semibold text-gray-700">{friend().username}</p>
                 <p class="text-gray-400">{friend().nickname}</p>
-                <p class="text-gray-400">{friend().bio}</p>
                 <div class="mt-6 flex justify-center">
                   <Confirm onConfirm={() => handleDeleteFriend(homeState.currFriend)}>
                     <div class="cursor-pointer rounded-md px-4 py-1.5 text-rose-500 ring-1 ring-rose-500 hover:bg-rose-500 hover:text-white active:bg-rose-400">

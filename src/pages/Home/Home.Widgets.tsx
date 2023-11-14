@@ -46,25 +46,12 @@ export const ProfileModal: Component<{ open: boolean; onClose: Accessor<void> }>
               class="w-full rounded-md border-gray-300 placeholder:text-gray-300 focus:border-sky-600 focus:ring-sky-600"
             />
           </div>
-          <div class="space-y-2 px-8 pb-7">
-            <label for="bio" class="text-gray-500">
-              Bio
-            </label>
-            <input
-              id="bio"
-              type="text"
-              placeholder={state.user?.bio}
-              disabled={loading()}
-              onInput={(ev) => setFields("bio", ev.currentTarget.value)}
-              class="w-full rounded-md border-gray-300 placeholder:text-gray-300 focus:border-sky-600 focus:ring-sky-600"
-            />
-          </div>
 
           <div class="space-x-4 bg-gray-100 px-8 py-3 text-right">
             <button onClick={props.onClose} type="button" class="rounded-md border border-gray-300 p-2 text-sm font-semibold text-gray-600 hover:bg-gray-200">
               Cancel
             </button>
-            <button disabled={loading()} type="submit" class="rounded-md bg-sky-700 py-2 px-4 text-sm font-semibold text-white hover:bg-sky-600">
+            <button disabled={loading()} type="submit" class="rounded-md bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-600">
               Save
             </button>
           </div>
@@ -126,7 +113,7 @@ export const PasswordModal: Component<{ open: boolean; onClose: Accessor<void> }
 };
 
 export const DisconnectionModal: Component = () => {
-  const [_, { clearAuth }] = useAppContext();
+  const [_, { signOut }] = useAppContext();
   const [homeState] = useHomeContext();
   const { handleLogout } = useLogout(false);
 
@@ -148,7 +135,7 @@ export const DisconnectionModal: Component = () => {
           <div class="flex justify-end space-x-6">
             <button
               type="button"
-              onClick={clearAuth}
+              onClick={signOut}
               class="inline-flex justify-center rounded-md bg-rose-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500"
             >
               Got it

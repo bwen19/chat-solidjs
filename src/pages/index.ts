@@ -17,10 +17,6 @@ export const routes: RouteDefinition[] = [
     component: lazy(() => import("./Login")),
   },
   {
-    path: "/register",
-    component: lazy(() => import("./Register")),
-  },
-  {
     path: "/admin",
     children: adminRoutes,
   },

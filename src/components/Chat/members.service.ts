@@ -41,7 +41,7 @@ export const useAddMembers = () => {
           }
         }
         s.total = s.candidates.filter((x) => x.selected && !x.fixed).length;
-      })
+      }),
     );
   });
 
@@ -59,21 +59,19 @@ export const useAddMembers = () => {
             s.total++;
           }
         }
-      })
+      }),
     );
   };
 
   const addMembers = async () => {
-    const member_ids = newMembers.candidates.filter((x) => x.selected && !x.fixed).map((x) => x.id);
-    if (member_ids.length === 0) {
+    const members_id = newMembers.candidates.filter((x) => x.selected && !x.fixed).map((x) => x.id);
+    if (members_id.length === 0) {
       setToast("人数不能为空", "error");
       return;
     }
 
-    const req: AddMembersRequest = {
-      AddMembers: { room_id: homeState.currRoom, member_ids },
-    };
-    sendMessage(req);
+    const req: AddMembersRequest = { room_id: homeState.currRoom, members_id };
+    sendMessage("add-members", req);
   };
 
   return { newMembers, addSelection, addMembers };
@@ -115,10 +113,10 @@ export const useDeleteMembers = () => {
               }
             }
             s.total = s.candidates.filter((x) => x.selected && !x.fixed).length;
-          })
+          }),
         );
-      }
-    )
+      },
+    ),
   );
 
   const delSelection = (userId: number) => {
@@ -135,21 +133,19 @@ export const useDeleteMembers = () => {
             s.total++;
           }
         }
-      })
+      }),
     );
   };
 
   const deleteMembers = () => {
-    const member_ids = delMembers.candidates.filter((x) => x.selected && !x.fixed).map((x) => x.id);
-    if (member_ids.length === 0) {
+    const members_id = delMembers.candidates.filter((x) => x.selected && !x.fixed).map((x) => x.id);
+    if (members_id.length === 0) {
       setToast("人数不能为空", "error");
       return;
     }
 
-    const req: DeleteMembersRequest = {
-      DeleteMembers: { room_id: homeState.currRoom, member_ids },
-    };
-    sendMessage(req);
+    const req: DeleteMembersRequest = { room_id: homeState.currRoom, members_id };
+    sendMessage("delete-members", req);
   };
 
   return { delMembers, delSelection, deleteMembers };

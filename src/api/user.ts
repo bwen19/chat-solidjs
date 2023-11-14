@@ -1,101 +1,55 @@
-import { ApiConfig } from ".";
+import { ApiConfig } from "./model";
+import {
+  CreateUserRequest,
+  CreateUserResponse,
+  UpdateUserResponse,
+  UpdateUserRequest,
+  ChangeAvatarResponse,
+  ChangePasswordRequest,
+  ListUsersResponse,
+  ListUsersRequest,
+  FindUserResponse,
+  SendFileResponse,
+} from "./dto";
 
-export type UserInfo = {
-  id: number;
-  username: string;
-  nickname: string;
-  avatar: string;
-  bio: string;
-  role: string;
-  deleted: boolean;
-  create_at: string;
-};
-
-// ---------------- CreateUser ---------------- //
-export type CreateUserRequest = {
-  username: string;
-  password: string;
-  role: string;
-};
-export type CreateUserResponse = {
-  user: UserInfo;
-};
 export const CreateUserConfig: ApiConfig<CreateUserResponse, CreateUserRequest> = {
   url: "/api/user",
   method: "POST",
 };
 
-// ---------------- DeleteUsers ---------------- //
-export type DeleteUsersRequest = {
-  user_ids: number[];
-};
-export const DeleteUsersConfig: ApiConfig<{}, DeleteUsersRequest> = {
+export const DeleteUserConfig: ApiConfig<unknown, number> = {
   url: "/api/user",
   method: "DELETE",
+  path: true,
 };
 
-// ---------------- UpdateUser ---------------- //
-export type UpdateUserRequest = {
-  user_id: number;
-  username?: string;
-  password?: string;
-  nickname?: string;
-  avatar?: string;
-  bio?: string;
-  role?: string;
-  deleted?: boolean;
-};
-export type UpdateUserResponse = {
-  user: UserInfo;
-};
 export const UpdateUserConfig: ApiConfig<UpdateUserResponse, UpdateUserRequest> = {
   url: "/api/user",
   method: "PATCH",
 };
 
-// ---------------- ChangeAvatar ---------------- //
-
-export type ChangeAvatarResponse = {
-  avatar: string;
-};
 export const ChangeAvatarConfig: ApiConfig<ChangeAvatarResponse> = {
   url: "/api/user/avatar",
   method: "POST",
 };
 
-// ---------------- ChangePasswor ---------------- //
-export type ChangePasswordRequest = {
-  old_password: string;
-  new_password: string;
-};
-export const ChangePasswordConfig: ApiConfig<{}, ChangePasswordRequest> = {
+export const ChangePasswordConfig: ApiConfig<unknown, ChangePasswordRequest> = {
   url: "/api/user/password",
   method: "PATCH",
 };
 
-// ---------------- ListUsers ---------------- //
-export type ListUsersRequest = {
-  page_id?: number;
-  page_size?: number;
-  keyword?: string;
-};
-export type ListUsersResponse = {
-  total: number;
-  users: UserInfo[];
-};
 export const ListUsersConfig: ApiConfig<ListUsersResponse, ListUsersRequest> = {
   url: "/api/user",
   method: "GET",
 };
 
-// ---------------- GetUserByName ---------------- //
-export type GetUserByNameRequest = {
-  username: string;
-};
-export type GetUserByNameResponse = {
-  user?: UserInfo;
-};
-export const GetUserByNameConfig: ApiConfig<GetUserByNameResponse, GetUserByNameRequest> = {
-  url: "/api/user/username",
+export const FindUserConfig: ApiConfig<FindUserResponse, string> = {
+  url: "/api/user/name",
   method: "GET",
+  path: true,
+};
+
+export const SendFileConfig: ApiConfig<SendFileResponse> = {
+  url: "/api/message/file",
+  method: "POST",
 };

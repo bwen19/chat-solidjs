@@ -6,8 +6,8 @@ import { LockSolid, LogoName, Spin, UserSolid } from "@/components/icons";
 import { useLogin } from "./login.service";
 
 const Login: Component = () => {
-  const [state, { toggleAutoLogin }] = useAppContext();
-  const { loading, handleSubmit, setFields } = useLogin();
+  const [state] = useAppContext();
+  const { loading, handleSubmit, setFields } = useLogin(false);
 
   return (
     <div class="flex h-screen w-full items-center justify-center bg-cover bg-center bg-no-repeat px-2" style={{ "background-image": `url(${loginBgSrc})` }}>
@@ -20,7 +20,7 @@ const Login: Component = () => {
             <div class="flex justify-center">
               <LogoName class="h-9" />
             </div>
-            <form onSubmit={handleSubmit} spellcheck={false} class="mt-10 space-y-6">
+            <form onSubmit={handleSubmit} spellcheck={false} class="mt-10 space-y-8">
               <div class="relative">
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <UserSolid class="h-4 w-4 text-gray-400" />
@@ -30,7 +30,7 @@ const Login: Component = () => {
                   placeholder="Username"
                   disabled={loading()}
                   onInput={(ev) => setFields("username", ev.currentTarget.value)}
-                  class="w-full rounded-md border-gray-300 pl-10 placeholder:text-gray-300 focus:border-sky-600 focus:ring-sky-600"
+                  class="w-full rounded-md border-gray-300 py-3 pl-10 placeholder:text-gray-300 focus:border-sky-600 focus:ring-sky-600"
                 />
               </div>
 
@@ -43,46 +43,23 @@ const Login: Component = () => {
                   placeholder="Password"
                   disabled={loading()}
                   onInput={(ev) => setFields("password", ev.currentTarget.value)}
-                  class="w-full rounded-md border-gray-300 pl-10 placeholder:text-gray-300 focus:border-sky-600 focus:ring-sky-600"
+                  class="w-full rounded-md border-gray-300 py-3 pl-10 placeholder:text-gray-300 focus:border-sky-600 focus:ring-sky-600"
                 />
-              </div>
-
-              <div class="my-1 flex items-center">
-                <input
-                  id="auto-login"
-                  type="checkbox"
-                  checked={state.isAutoLogin}
-                  onChange={() => toggleAutoLogin()}
-                  class="h-4 w-4 rounded text-sky-600 focus:ring-sky-600"
-                />
-                <label class="ml-2 grow text-sm text-gray-600" for="auto-login">
-                  Remember me
-                </label>
-                <a class="text-sm text-sky-600" href="#">
-                  Forgot password?
-                </a>
               </div>
 
               <Show
                 when={loading()}
                 fallback={
-                  <button type="submit" class="my-2 w-full rounded-md bg-sky-600 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 active:bg-sky-600">
+                  <button type="submit" class="my-2 w-full rounded-md bg-sky-600 py-3 font-semibold text-white hover:bg-sky-700 active:bg-sky-600">
                     Log In
                   </button>
                 }
               >
-                <button type="button" disabled class="my-2 w-full cursor-default rounded-md bg-sky-700 py-2.5 text-sm font-semibold text-white">
+                <button type="button" disabled class="my-2 w-full cursor-default rounded-md bg-sky-700 py-3 font-semibold text-white">
                   <Spin class="mr-3 inline h-4 w-4 animate-spin text-teal-700 " />
                   Processing ...
                 </button>
               </Show>
-
-              <div class="text-center text-sm">
-                <span class="text-gray-600">Don't have an account? </span>
-                <a class="text-sky-600" href="/register">
-                  Register here.
-                </a>
-              </div>
             </form>
           </div>
         </div>

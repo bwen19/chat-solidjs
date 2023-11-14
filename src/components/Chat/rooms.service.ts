@@ -43,10 +43,10 @@ export const useNewRoom = () => {
                 s.candidates.push({ id: friend.id, name: friend.nickname, avatar: friend.avatar, selected: false, fixed: false });
               }
             }
-          })
+          }),
         );
-      }
-    )
+      },
+    ),
   );
 
   const toggleSelection = (userId: number) => {
@@ -63,7 +63,7 @@ export const useNewRoom = () => {
             s.total++;
           }
         }
-      })
+      }),
     );
   };
 
@@ -74,16 +74,14 @@ export const useNewRoom = () => {
       setToast("房间名要大于2个字符", "error");
       return;
     }
-    const member_ids = newRoom.candidates.filter((x) => x.selected).map((x) => x.id);
-    if (member_ids.length < 3) {
+    const members_id = newRoom.candidates.filter((x) => x.selected).map((x) => x.id);
+    if (members_id.length < 3) {
       setToast("房间人数不能小于3", "error");
       return;
     }
 
-    const req: NewRoomRequest = {
-      CreateRoom: { name: newRoom.name, member_ids },
-    };
-    sendMessage(req);
+    const req: NewRoomRequest = { name: newRoom.name, members_id };
+    sendMessage("new-room", req);
   };
 
   return { newRoom, toggleSelection, setName, createRoom };

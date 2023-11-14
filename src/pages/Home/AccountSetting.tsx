@@ -1,5 +1,4 @@
 import { Component, createSignal, Show } from "solid-js";
-import { A } from "@solidjs/router";
 import { useAppContext } from "@/AppContext";
 import { Avatar } from "@/components/common";
 import { LogoutModal } from "@/components/Logout";
@@ -39,11 +38,6 @@ const AccountSetting: Component = () => {
             <div onClick={showPasswordModal} class="cursor-pointer py-2 pl-6 text-sm text-gray-600 hover:bg-sky-600 hover:text-gray-50">
               Change Password
             </div>
-            <Show when={state.user?.role === "admin"}>
-              <A href="/admin">
-                <div class="py-2 pl-6 text-sm text-gray-600 hover:bg-sky-600 hover:text-gray-50">Administrate</div>
-              </A>
-            </Show>
           </div>
           <div class="py-1">
             <LogoutModal>

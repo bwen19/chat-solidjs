@@ -1,10 +1,10 @@
-export const fmtSendTime = (time: string) => {
-  const date = new Date(time);
+export const fmtSendTime = (dt: Date) => {
+  const date = new Date(dt);
   return `${("0" + date.getHours()).slice(-2)}:${("0" + date.getMinutes()).slice(-2)}`;
 };
 
-export const fmtDividerDate = (time: string, today: Date): string => {
-  const date = new Date(time);
+export const fmtDividerDate = (dt: Date, today: Date): string => {
+  const date = new Date(dt);
   const weekday = ["日", "一", "二", "三", "四", "五", "六"][date.getDay()];
 
   if (today.getFullYear() > date.getFullYear()) {
@@ -23,9 +23,8 @@ export const fmtDividerDate = (time: string, today: Date): string => {
   }
 };
 
-export const fmtLastDate = (time: string, today: Date): string => {
-  const date = new Date(time);
-
+export const fmtLastDate = (dt: Date, today: Date): string => {
+  const date = new Date(dt);
   if (today.getFullYear() > date.getFullYear()) {
     return `${date.getFullYear()}年${date.getMonth() + 1}月${("0" + date.getDate()).slice(-2)}日`;
   } else if (today.getMonth() > date.getMonth()) {
@@ -42,8 +41,8 @@ export const fmtLastDate = (time: string, today: Date): string => {
   }
 };
 
-export const fmtDate = (time: string): string => {
-  const date = new Date(time);
+export const fmtDate = (dt: Date): string => {
+  const date = new Date(dt);
   return `${date.getFullYear()}-${date.getMonth() + 1}-${("0" + date.getDate()).slice(-2)}`;
 };
 

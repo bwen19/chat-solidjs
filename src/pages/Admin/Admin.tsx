@@ -1,6 +1,6 @@
 import { Component, For } from "solid-js";
 import { A, Outlet } from "@solidjs/router";
-import { ChatOutline, EnvelopeOutline, FriendOutline, HomeOutline, Logo, PowerOutline } from "@/components/icons";
+import { ChatOutline, FriendOutline, HomeOutline, Logo, PowerOutline } from "@/components/icons";
 import { Avatar, RoleBanner } from "@/components/common";
 import { useAppContext } from "@/AppContext";
 import { LogoutModal } from "@/components/Logout";
@@ -22,11 +22,6 @@ const menus: MenuInfo[] = [
     path: "/admin/users",
     icon: FriendOutline,
   },
-  {
-    name: "Invitations",
-    path: "/admin/invitations",
-    icon: EnvelopeOutline,
-  },
 ];
 
 const MenuItem: Component<{ item: MenuInfo }> = (props) => {
@@ -34,7 +29,7 @@ const MenuItem: Component<{ item: MenuInfo }> = (props) => {
     <li class="mx-2 overflow-hidden rounded-md lg:mx-4">
       <A
         href={props.item.path}
-        class="flex w-full items-center justify-center py-2 px-1 lg:justify-start lg:px-6 lg:py-3"
+        class="flex w-full items-center justify-center px-1 py-2 lg:justify-start lg:px-6 lg:py-3"
         activeClass="bg-sky-200 text-sky-600"
         inactiveClass="bg-white text-gray-600 hover:bg-sky-200 hover:text-sky-600"
       >
@@ -54,7 +49,7 @@ const Admin: Component = () => {
 
   return (
     <div class="h-screen bg-white">
-      <div class="fixed top-0 left-0 z-10 flex h-full w-14 flex-col lg:w-72">
+      <div class="fixed left-0 top-0 z-10 flex h-full w-14 flex-col lg:w-72">
         <div class="border-b pb-4">
           <div class="flex h-16 items-center justify-center lg:h-20">
             <Logo class="h-9 w-9" />
@@ -76,23 +71,9 @@ const Admin: Component = () => {
         </ul>
 
         <div class="shrink-0 border-t pb-6 pt-2">
-          <div class="mx-2 overflow-hidden rounded-md lg:mx-4">
-            <A
-              href="/"
-              class="flex w-full items-center justify-center py-2 px-1 text-gray-500 hover:bg-sky-200 hover:text-sky-600 lg:justify-start lg:px-6 lg:py-3"
-            >
-              <div class="shrink-0">
-                <ChatOutline class="h-5 w-5 shrink-0 stroke-2" />
-              </div>
-              <div class="ml-3 hidden lg:block">
-                <span class="line-clamp-1">Go chat</span>
-              </div>
-            </A>
-          </div>
-
           <LogoutModal>
             <div class="mx-2 cursor-pointer overflow-hidden rounded-md lg:mx-4">
-              <div class="flex w-full items-center justify-center py-2 px-1 text-gray-500 hover:bg-sky-200 hover:text-sky-600 lg:justify-start lg:px-6 lg:py-3">
+              <div class="flex w-full items-center justify-center px-1 py-2 text-gray-500 hover:bg-sky-200 hover:text-sky-600 lg:justify-start lg:px-6 lg:py-3">
                 <PowerOutline class="h-5 w-5 shrink-0" />
                 <div class="ml-3 hidden lg:block">
                   <span class="line-clamp-1">Log out</span>

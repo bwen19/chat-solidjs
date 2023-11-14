@@ -5,8 +5,8 @@ import { useAppContext } from "@/AppContext";
 import { LoginConfig } from "@/api";
 import { useFetchAuth } from "@/utils/fetch";
 
-export const useLogin = (is_admin?: boolean) => {
-  const [state, { setAuth, setToast }] = useAppContext();
+export const useLogin = (is_admin: boolean) => {
+  const [_, { signIn, setToast }] = useAppContext();
   const navigate = useNavigate();
   const login = useFetchAuth(LoginConfig);
 
@@ -19,19 +19,20 @@ export const useLogin = (is_admin?: boolean) => {
 
     setLoading(true);
     try {
-      const resp = await login({
+      const rsp = await login({
         username: fields.username,
         password: fields.password,
-        is_admin,
-        is_persisted: state.isAutoLogin,
+        is_admin: is_admin,
       });
-      setAuth(resp);
+
+      signIn(rsp.user, rsp.access_token);
       if (is_admin) {
         navigate("/admin");
       } else {
         navigate("/");
       }
     } catch (err) {
+
       if (err instanceof Error && err.message) {
         setToast(err.message, "error");
       }

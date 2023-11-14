@@ -3,20 +3,16 @@ import { useAppContext } from "@/AppContext";
 import { AutoLoginConfig } from "@/api";
 import { useFetchAuth } from "@/utils/fetch";
 
-const useAutoLogin = (is_admin?: boolean) => {
-  const [state, { setAuth, toggleAutoLogin }] = useAppContext();
+const useAutoLogin = (is_admin: boolean) => {
+  const [state, { signIn }] = useAppContext();
   const autoLogin = useFetchAuth(AutoLoginConfig);
 
   const [loading, setLoading] = createSignal(true);
 
   onMount(async () => {
-    if (!state.isLoggedIn && state.isAutoLogin) {
-      try {
-        const resp = await autoLogin({ is_admin });
-        setAuth(resp);
-      } catch (err) {
-        toggleAutoLogin();
-      }
+    if (!state.isLoggedIn) {
+      const rsp = await autoLogin({ is_admin });
+      signIn(rsp.user, rsp.access_token);
     }
     setLoading(false);
   });

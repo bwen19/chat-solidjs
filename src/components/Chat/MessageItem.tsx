@@ -12,7 +12,7 @@ const MessageText: Component<{ item: MessageInfo }> = (props) => {
   const [state] = useAppContext();
   return (
     <Show
-      when={state.user.id === props.item.sid}
+      when={state.user.id === props.item.sender_id}
       fallback={
         <div class="flex">
           <div class="flex items-start space-x-2">
@@ -53,7 +53,7 @@ const MessageFile: Component<{ item: MessageInfo }> = (props) => {
 
   return (
     <Show
-      when={state.user.id === props.item.sid}
+      when={state.user.id === props.item.sender_id}
       fallback={
         <div class="flex">
           <div class="flex w-5/6 items-start space-x-2">

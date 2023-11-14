@@ -33,7 +33,7 @@ const ChatPage: Component = () => {
         }
       >
         <div class="flex h-full grow flex-col bg-gray-100 py-1">
-          <div class="flex h-14 items-center justify-between border-b px-4">
+          <div class="flex h-14 shrink-0 items-center justify-between border-b px-4">
             <Avatar src={room().cover} class="h-9 w-9 shrink-0 rounded-full" />
             <h3 class="font-semibold text-gray-700">{room().name}</h3>
             <div

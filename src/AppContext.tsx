@@ -1,8 +1,6 @@
 import { Accessor, createContext, ParentComponent, useContext } from "solid-js";
-import { createStore } from "solid-js/store";
-import { UserInfo, LoginResponse } from "@/api";
-
-const AUTO_LOGIN_KEY: string = "isAutoLogin";
+import { createStore, produce } from "solid-js/store";
+import { UserInfo } from "@/api";
 
 export type ToastKind = "success" | "error";
 type ToastState = {
@@ -12,9 +10,8 @@ type ToastState = {
 };
 
 type AppContextState = {
-  isLoggedIn: boolean;
-  isAutoLogin: boolean;
   user?: UserInfo;
+  isLoggedIn: boolean;
   token: string;
   toast: ToastState;
 };
@@ -22,13 +19,11 @@ type AppContextState = {
 type AppContextValue = [
   state: AppContextState,
   actions: {
-    setAuth: (resp: LoginResponse) => void;
-    setUser: (user: UserInfo) => void;
-    setToken: (token: string) => void;
-    clearAuth: Accessor<void>;
-    toggleAutoLogin: Accessor<void>;
+    signIn: (user: UserInfo, token: string) => void;
+    signOut: Accessor<void>;
+    updateState: (user?: UserInfo, token?: string) => void;
     setToast: (message: string, kind: ToastKind, open?: boolean) => void;
-  }
+  },
 ];
 
 const AppContext = createContext<AppContextValue>();
@@ -36,29 +31,30 @@ const AppContext = createContext<AppContextValue>();
 export const AppContextProvider: ParentComponent = (props) => {
   const [state, setState] = createStore<AppContextState>({
     isLoggedIn: false,
-    isAutoLogin: localStorage.getItem(AUTO_LOGIN_KEY) === "true" ? true : false,
     token: "",
     toast: { open: false, message: "", kind: "success" },
   });
 
-  const setAuth = (resp: LoginResponse) => {
-    setState({ isLoggedIn: true, user: resp.user, token: resp.access_token });
-  };
-  const setUser = (user: UserInfo) => setState("user", user);
-  const setToken = (token: string) => setState("token", token);
-  const clearAuth = () => {
-    localStorage.setItem(AUTO_LOGIN_KEY, "false");
-    setState({ isLoggedIn: false, isAutoLogin: false, user: undefined, token: "" });
+  const signIn = (user: UserInfo, token: string) => {
+    setState({ isLoggedIn: true, user, token });
   };
 
-  const toggleAutoLogin = () => {
-    localStorage.setItem(AUTO_LOGIN_KEY, state.isAutoLogin ? "false" : "true");
-    setState("isAutoLogin", (value) => !value);
+  const signOut = () => {
+    setState({ isLoggedIn: false, user: undefined, token: "" });
+  };
+
+  const updateState = (user?: UserInfo, token?: string) => {
+    setState(
+      produce((s) => {
+        if (user) s.user = user;
+        if (token) s.token = token;
+      }),
+    );
   };
 
   const setToast = (message: string, kind: ToastKind, open = true) => setState("toast", { message, kind, open });
 
-  return <AppContext.Provider value={[state, { setAuth, setUser, setToken, clearAuth, toggleAutoLogin, setToast }]}>{props.children}</AppContext.Provider>;
+  return <AppContext.Provider value={[state, { signIn, signOut, updateState, setToast }]}>{props.children}</AppContext.Provider>;
 };
 
 export const useAppContext = () => useContext(AppContext);

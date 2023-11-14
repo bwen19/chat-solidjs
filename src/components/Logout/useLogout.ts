@@ -4,7 +4,7 @@ import { LogoutConfig } from "@/api";
 import { useFetchAuth } from "@/utils/fetch";
 
 export const useLogout = (clean = true) => {
-  const [_, { setToast, clearAuth }] = useAppContext();
+  const [state, { setToast, signOut }] = useAppContext();
   const [loading, setLoading] = createSignal(false);
   const logout = useFetchAuth(LogoutConfig);
 
@@ -17,7 +17,7 @@ export const useLogout = (clean = true) => {
         if (err.message) setToast(err.message, "error");
       }
     } finally {
-      if (clean) clearAuth();
+      if (clean) signOut();
     }
     setLoading(false);
   };

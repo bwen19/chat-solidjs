@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import { AcceptFriendRequest, AddFriendRequest, DeleteFriendRequest, GetUserByNameConfig, RefuseFriendRequest, UserInfo } from "@/api";
+import { AcceptFriendRequest, AddFriendRequest, DeleteFriendRequest, FindUserConfig, RefuseFriendRequest, UserInfo } from "@/api";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
 import { useFetchPrivate } from "@/utils/fetch";
@@ -8,31 +8,23 @@ export const useFriend = () => {
   const [_, { sendMessage }] = useHomeContext();
 
   const handleAddFriend = (userId: number) => {
-    const req: AddFriendRequest = {
-      AddFriend: { friend_id: userId },
-    };
-    sendMessage(req);
+    const req: AddFriendRequest = { friend_id: userId };
+    sendMessage("add-friend", req);
   };
 
   const handleAcceptFriend = (userId: number) => {
-    const req: AcceptFriendRequest = {
-      AcceptFriend: { friend_id: userId },
-    };
-    sendMessage(req);
+    const req: AcceptFriendRequest = { friend_id: userId };
+    sendMessage("accept-friend", req);
   };
 
   const handleRefuseFriend = (userId: number) => {
-    const req: RefuseFriendRequest = {
-      RefuseFriend: { friend_id: userId },
-    };
-    sendMessage(req);
+    const req: RefuseFriendRequest = { friend_id: userId };
+    sendMessage("refuse-friend", req);
   };
 
   const handleDeleteFriend = (userId: number) => {
-    const req: DeleteFriendRequest = {
-      DeleteFriend: { friend_id: userId },
-    };
-    sendMessage(req);
+    const req: DeleteFriendRequest = { friend_id: userId };
+    sendMessage("delete-friend", req);
   };
 
   return { handleAddFriend, handleAcceptFriend, handleRefuseFriend, handleDeleteFriend };
@@ -40,7 +32,7 @@ export const useFriend = () => {
 
 export const useFindUser = () => {
   const [_, { setToast }] = useAppContext();
-  const getUserByName = useFetchPrivate(GetUserByNameConfig);
+  const findUser = useFetchPrivate(FindUserConfig);
 
   const [searched, setSearched] = createSignal<UserInfo>();
 
@@ -51,7 +43,7 @@ export const useFindUser = () => {
     }
 
     try {
-      const resp = await getUserByName({ username: keyword });
+      const resp = await findUser(keyword);
       setSearched(resp?.user);
     } catch (err) {
       if (err instanceof Error) {

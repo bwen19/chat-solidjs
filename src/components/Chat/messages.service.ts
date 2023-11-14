@@ -9,14 +9,12 @@ export const useSendMessage = () => {
 
   const handleSendMsg = () => {
     if (content()) {
-      const message: NewMessageRequest = {
-        SendMessage: {
-          room_id: homeState.currRoom,
-          content: content(),
-          kind: "text",
-        },
+      const req: NewMessageRequest = {
+        room_id: homeState.currRoom,
+        content: content(),
+        kind: "text",
       };
-      sendMessage(message);
+      sendMessage("new-message", req);
       setContent("");
     }
   };
@@ -31,14 +29,12 @@ export const useSendFile = () => {
   const handleSendFile = async (file: File) => {
     try {
       const { file_url } = await uploadFile(file);
-      const message: NewMessageRequest = {
-        SendMessage: {
-          room_id: homeState.currRoom,
-          content: `${file_url} ${file.name}`,
-          kind: "file",
-        },
+      const req: NewMessageRequest = {
+        room_id: homeState.currRoom,
+        content: `${file_url} ${file.name}`,
+        kind: "file",
       };
-      sendMessage(message);
+      sendMessage("new-message", req);
     } catch (err) {
       console.error(err);
     }

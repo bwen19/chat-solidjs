@@ -26,10 +26,6 @@ export const adminRoutes: RouteDefinition[] = [
           path: "/users",
           component: lazy(() => import("@/components/Users")),
         },
-        {
-          path: "/invitations",
-          component: lazy(() => import("@/components/Invitations")),
-        },
       ],
     },
   },

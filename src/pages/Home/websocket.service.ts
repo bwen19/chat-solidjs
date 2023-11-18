@@ -11,12 +11,10 @@ import {
   UpdateRoomResponse,
   NewRoomResponse,
   RefuseFriendResponse,
-  InitializeRequest,
   InitializeResponse,
-  WebsocketEvent,
-  EventData,
+  ServerEvent,
+  ClientEvent,
 } from "@/api";
-import { todayEndTime } from "@/utils/time";
 import { HomeContextState } from "./HomeContext";
 
 export class WebSocketService {
@@ -37,8 +35,8 @@ export class WebSocketService {
 
     this.wsInstance.onopen = () => {
       this.reconnectable = true;
-      const req: InitializeRequest = { timestamp: end_time.getTime() };
-      this.sendWsMessage("initialize", req);
+      const evt: ClientEvent = { action: "initialize", data: { timestamp: end_time.getTime() } };
+      this.sendWsMessage(evt);
     };
 
     this.wsInstance.onclose = async (ev) => {
@@ -53,67 +51,69 @@ export class WebSocketService {
     };
 
     this.wsInstance.onmessage = (ev) => {
-      const event = JSON.parse(ev.data) as WebsocketEvent;
+      const event = JSON.parse(ev.data) as ServerEvent;
       console.log("receive ", event.action);
 
       switch (event.action) {
         case "toast":
-          this.setToast(event.data as string, "error");
+          this.setToast(event.data, "error");
           break;
         case "initialize":
-          this.initialize(event.data as InitializeResponse);
+          this.initialize(event.data);
           break;
         case "new-message":
-          this.newMessage(event.data as NewMessageResponse);
+          this.newMessage(event.data);
           break;
         case "new-room":
-          this.newRoom(event.data as NewRoomResponse);
+          this.newRoom(event.data);
           break;
         case "update-room":
-          this.updateRoom(event.data as UpdateRoomResponse);
+          this.updateRoom(event.data);
           break;
         case "delete-room":
-          this.deleteRoom(event.data as DeleteRoomResponse);
+          this.deleteRoom(event.data);
           break;
         case "add-members":
-          this.addMembers(event.data as AddMembersResponse);
+          this.addMembers(event.data);
           break;
-        case "deleted-members":
-          this.deleteMembers(event.data as DeleteMembersResponse);
+        case "delete-members":
+          this.deleteMembers(event.data);
           break;
         case "add-friend":
-          this.addFriend(event.data as AddFriendResponse);
+          this.addFriend(event.data);
           break;
         case "accept-friend":
-          this.acceptFriend(event.data as AcceptFriendResponse);
+          this.acceptFriend(event.data);
           break;
         case "refuse-friend":
-          this.refuseFriend(event.data as RefuseFriendResponse);
+          this.refuseFriend(event.data);
           break;
         case "delete-friend":
-          this.deleteFriend(event.data as DeleteFriendResponse);
+          this.deleteFriend(event.data);
           break;
+        default:
+          const _exhaustiveCheck: never = event;
       }
     };
   }
 
   private initialize(rsp: InitializeResponse) {
-    const num = rsp.friends.filter((v) => v.status === "adding" && !v.first).length;
+    const num = rsp.friends.filter((v) => v.status === "adding" && v.first).length;
     this.setHomeState({ rooms: rsp.rooms, friends: rsp.friends, numNewFriends: num });
   }
 
   private newMessage(rsp: NewMessageResponse) {
     this.setHomeState(
       produce((s) => {
-        const room_id = rsp.message.room_id;
-        const index = s.rooms.findIndex((x) => x.id === room_id);
+        const roomId = rsp.message.roomId;
+        const index = s.rooms.findIndex((x) => x.id === roomId);
         if (index !== -1) {
           const [room, _] = s.rooms.splice(index, 1);
-          const date = new Date(room.messages[room.messages.length - 1]?.send_at);
+          const date = new Date(room.messages[room.messages.length - 1]?.sendAt);
           if (s.today.getTime() - date.getTime() > 86400000) rsp.message.divide = true;
 
           room.messages.push(rsp.message);
-          if (s.currPage !== "chat" || s.currRoom !== room_id) {
+          if (s.currPage !== "chat" || s.currRoom !== roomId) {
             room.unreads++;
             s.totalUnreads++;
           }
@@ -127,7 +127,7 @@ export class WebSocketService {
     this.setHomeState(
       produce((s) => {
         s.friends.push(rsp.friend);
-        if (!rsp.friend.first) s.numNewFriends++;
+        if (rsp.friend.first) s.numNewFriends++;
       }),
     );
   }
@@ -138,7 +138,7 @@ export class WebSocketService {
         const index = s.friends.findIndex((x) => x.id === rsp.friend.id);
         if (index !== -1) {
           s.friends[index] = rsp.friend;
-          if (!rsp.friend.first) s.numNewFriends--;
+          if (rsp.friend.first) s.numNewFriends--;
         } else {
           s.friends.push(rsp.friend);
         }
@@ -150,10 +150,10 @@ export class WebSocketService {
   private refuseFriend(rsp: RefuseFriendResponse) {
     this.setHomeState(
       produce((s) => {
-        const index = s.friends.findIndex((x) => x.id === rsp.friend_id);
+        const index = s.friends.findIndex((x) => x.id === rsp.friendId);
         if (index !== -1) {
           const [removedFriend, _] = s.friends.splice(index, 1);
-          if (!removedFriend.first) s.numNewFriends--;
+          if (removedFriend.first) s.numNewFriends--;
         }
       }),
     );
@@ -162,13 +162,18 @@ export class WebSocketService {
   private deleteFriend(rsp: DeleteFriendResponse) {
     this.setHomeState(
       produce((s) => {
-        const index = s.friends.findIndex((x) => x.id === rsp.friend_id);
+        const index = s.friends.findIndex((x) => x.id === rsp.friendId);
         if (index !== -1) s.friends.splice(index, 1);
-        if (s.currFriend === rsp.friend_id) s.currFriend = 0;
+        if (s.currFriend === rsp.friendId) s.currFriend = 0;
 
-        const rindex = s.rooms.findIndex((x) => x.id === rsp.room_id);
-        if (rindex !== -1) s.rooms.splice(index, 1);
-        if (s.currRoom === rsp.room_id) s.currRoom = 0;
+        const rindex = s.rooms.findIndex((x) => x.id === rsp.roomId);
+        if (rindex !== -1) {
+          const rooms = s.rooms.splice(rindex, 1);
+          for (let room of rooms) {
+            s.totalUnreads -= room.unreads;
+          }
+        }
+        if (s.currRoom === rsp.roomId) s.currRoom = 0;
       }),
     );
   }
@@ -180,7 +185,7 @@ export class WebSocketService {
   private updateRoom(rsp: UpdateRoomResponse) {
     this.setHomeState(
       produce((s) => {
-        const index = s.rooms.findIndex((x) => x.id === rsp.room_id);
+        const index = s.rooms.findIndex((x) => x.id === rsp.roomId);
         if (index !== -1) s.rooms[index].name = rsp.name;
       }),
     );
@@ -189,9 +194,14 @@ export class WebSocketService {
   private deleteRoom(rsp: DeleteRoomResponse) {
     this.setHomeState(
       produce((s) => {
-        const index = s.rooms.findIndex((x) => x.id === rsp.room_id);
-        if (index !== -1) s.rooms.splice(index, 1);
-        if (s.currRoom === rsp.room_id) s.currRoom = 0;
+        const index = s.rooms.findIndex((x) => x.id === rsp.roomId);
+        if (index !== -1) {
+          const rooms = s.rooms.splice(index, 1);
+          for (let room of rooms) {
+            s.totalUnreads -= room.unreads;
+          }
+        }
+        if (s.currRoom === rsp.roomId) s.currRoom = 0;
       }),
     );
   }
@@ -199,7 +209,7 @@ export class WebSocketService {
   private addMembers(rsp: AddMembersResponse) {
     this.setHomeState(
       produce((s) => {
-        const index = s.rooms.findIndex((x) => x.id === rsp.room_id);
+        const index = s.rooms.findIndex((x) => x.id === rsp.roomId);
         if (index !== -1) s.rooms[index].members.push(...rsp.members);
       }),
     );
@@ -208,10 +218,10 @@ export class WebSocketService {
   private deleteMembers(rsp: DeleteMembersResponse) {
     this.setHomeState(
       produce((s) => {
-        const index = s.rooms.findIndex((x) => x.id === rsp.room_id);
+        const index = s.rooms.findIndex((x) => x.id === rsp.roomId);
         if (index !== -1) {
           for (let i = 0; i < s.rooms[index].members.length; i++) {
-            if (rsp.members_id.includes(s.rooms[index].members[i].id)) {
+            if (rsp.membersId.includes(s.rooms[index].members[i].id)) {
               s.rooms[index].members.splice(i, 1);
               i--;
             }
@@ -221,10 +231,9 @@ export class WebSocketService {
     );
   }
 
-  sendWsMessage(action: string, data: EventData) {
+  sendWsMessage(evt: ClientEvent) {
     if (this.wsInstance.readyState === WebSocket.OPEN) {
-      const wsEvent: WebsocketEvent = { action, data };
-      this.wsInstance.send(JSON.stringify(wsEvent));
+      this.wsInstance.send(JSON.stringify(evt));
     } else {
       this.setToast("WebSocket is not connected", "error");
     }

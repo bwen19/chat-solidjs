@@ -1,10 +1,9 @@
 import { Component, createMemo, createSignal, For, Show } from "solid-js";
-import { DeleteRoomRequest, LeaveRoomRequest, MemberInfo } from "@/api";
+import { ClientEvent, MemberInfo } from "@/api";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { Avatar, Confirm, SearchBox } from "../common";
-import { UserSolid, SettingOutline } from "../icons";
-import { ModifyMemberModal } from "./Chat.Widgets";
+import { Avatar, Confirm, SearchBox, UserSolid, SettingOutline } from "../common";
+import { ModifyMemberModalWrapper } from "./Chat.Widgets";
 
 // ========================// MemberItem //======================== //
 
@@ -54,12 +53,12 @@ const Members: Component = () => {
   const counts = () => (searching() ? searchedMembers().length : members().length);
 
   const handleDeleteRoom = () => {
-    const req: DeleteRoomRequest = { room_id: homeState.currRoom };
-    sendMessage("delete-room", req);
+    const evt: ClientEvent = { action: "delete-room", data: { roomId: homeState.currRoom } };
+    sendMessage(evt);
   };
   const handleLeaveRoom = () => {
-    const req: LeaveRoomRequest = { room_id: homeState.currRoom };
-    sendMessage("leave-room", req);
+    const evt: ClientEvent = { action: "leave-room", data: { roomId: homeState.currRoom } };
+    sendMessage(evt);
   };
 
   return (
@@ -74,11 +73,11 @@ const Members: Component = () => {
           <span class="ml-2 text-sky-700">{counts()}</span>
         </p>
         <Show when={["owner", "manager"].includes(rank())}>
-          <ModifyMemberModal>
+          <ModifyMemberModalWrapper>
             <div class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-gray-200 hover:text-sky-600 active:text-sky-500">
               <SettingOutline class="h-4 w-4" />
             </div>
-          </ModifyMemberModal>
+          </ModifyMemberModalWrapper>
         </Show>
       </div>
       <ul class="hover:scrollbar no-scrollbar grow overflow-y-scroll px-2 py-1">

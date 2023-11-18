@@ -1,8 +1,7 @@
-import { Accessor, Component, For, Show, createEffect, createSignal } from "solid-js";
+import { Accessor, Component, For, Show, onMount } from "solid-js";
 import { UserInfo } from "@/api";
 import { fmtDate } from "@/utils/time";
-import { Avatar, Confirm, RoleBanner, SearchBox } from "../common";
-import { ActiveSolid, InactiveSolid, TrashSolid } from "../icons";
+import { Avatar, Confirm, RoleBanner, ActiveSolid, InactiveSolid, TrashSolid } from "../common";
 import { useDeleteUser, useListUsers } from "./users.service";
 import { CreateUserButton, EditUserButton } from "./Users.Widgets";
 
@@ -28,8 +27,8 @@ const UserItem: Component<{ item: UserInfo; reload: Accessor<void> }> = (props) 
           <InactiveSolid class="h-5 w-5 text-red-500" />
         </Show>
       </td>
-      <td class="px-4 py-3 text-sm text-gray-600">{fmtDate(props.item.create_at)}</td>
-      <td class="py-3 px-4">
+      <td class="px-4 py-3 text-sm text-gray-600">{fmtDate(props.item.createAt)}</td>
+      <td class="px-4 py-3">
         <div class="flex items-center">
           <Confirm onConfirm={() => handleDeleteUser(props.item.id)}>
             <TrashSolid class="mr-4 h-5 w-5 cursor-pointer text-red-500" />
@@ -42,20 +41,16 @@ const UserItem: Component<{ item: UserInfo; reload: Accessor<void> }> = (props) 
 };
 
 const Users: Component = () => {
-  const { users, pageInfo, pageDown, pageUp, handleSearch, reload } = useListUsers();
+  const { users, pageInfo, pageDown, pageUp, reload } = useListUsers();
 
-  const [searching, setSearching] = createSignal(false);
-  createEffect(() => {
-    if (!searching()) handleSearch();
-  });
+  onMount(reload);
 
   return (
-    <div class="space-y-4 py-6 px-10">
+    <div class="space-y-4 px-10 py-6">
       <h3 class="text-2xl font-semibold text-gray-600">Users</h3>
 
       <div class="w-full overflow-hidden rounded-lg shadow-md">
-        <div class="flex justify-between bg-white p-3">
-          <SearchBox onSearch={handleSearch} setSearching={setSearching} placeholder="Search user here" />
+        <div class="flex justify-end bg-white p-3">
           <CreateUserButton reload={reload} />
         </div>
         <div class="w-full overflow-x-auto">

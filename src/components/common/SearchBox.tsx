@@ -1,5 +1,5 @@
 import { Component, createEffect, createSignal, JSX, Setter } from "solid-js";
-import { CloseOutline, SearchOutline } from "../icons";
+import { CloseOutline, SearchOutline } from "./icons";
 
 const SearchBox: Component<{ onSearch: (keyword: string) => void; setSearching: Setter<boolean>; placeholder?: string }> = (props) => {
   const [key, setKey] = createSignal("");

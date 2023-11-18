@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { NewMessageRequest, SendFileConfig } from "@/api";
+import { ClientEvent, SendFileConfig } from "@/api";
 import { useUpload } from "@/utils/upload";
 
 export const useSendMessage = () => {
@@ -9,12 +9,15 @@ export const useSendMessage = () => {
 
   const handleSendMsg = () => {
     if (content()) {
-      const req: NewMessageRequest = {
-        room_id: homeState.currRoom,
-        content: content(),
-        kind: "text",
+      const evt: ClientEvent = {
+        action: "new-message",
+        data: {
+          roomId: homeState.currRoom,
+          content: content(),
+          kind: "text",
+        },
       };
-      sendMessage("new-message", req);
+      sendMessage(evt);
       setContent("");
     }
   };
@@ -28,13 +31,16 @@ export const useSendFile = () => {
 
   const handleSendFile = async (file: File) => {
     try {
-      const { file_url } = await uploadFile(file);
-      const req: NewMessageRequest = {
-        room_id: homeState.currRoom,
-        content: `${file_url} ${file.name}`,
-        kind: "file",
+      const { fileUrl } = await uploadFile(file);
+      const evt: ClientEvent = {
+        action: "new-message",
+        data: {
+          roomId: homeState.currRoom,
+          content: `${fileUrl} ${file.name}`,
+          kind: "file",
+        },
       };
-      sendMessage("new-message", req);
+      sendMessage(evt);
     } catch (err) {
       console.error(err);
     }

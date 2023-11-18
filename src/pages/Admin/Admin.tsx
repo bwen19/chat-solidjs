@@ -1,9 +1,8 @@
 import { Component, For } from "solid-js";
 import { A, Outlet } from "@solidjs/router";
-import { ChatOutline, FriendOutline, HomeOutline, Logo, PowerOutline } from "@/components/icons";
-import { Avatar, RoleBanner } from "@/components/common";
+import { Avatar, RoleBanner, FriendOutline, HomeOutline, Logo, PowerOutline } from "@/components/common";
 import { useAppContext } from "@/AppContext";
-import { LogoutModal } from "@/components/Logout";
+import { LogoutModalWrapper } from "@/components";
 
 type MenuInfo = {
   name: string;
@@ -71,7 +70,7 @@ const Admin: Component = () => {
         </ul>
 
         <div class="shrink-0 border-t pb-6 pt-2">
-          <LogoutModal>
+          <LogoutModalWrapper>
             <div class="mx-2 cursor-pointer overflow-hidden rounded-md lg:mx-4">
               <div class="flex w-full items-center justify-center px-1 py-2 text-gray-500 hover:bg-sky-200 hover:text-sky-600 lg:justify-start lg:px-6 lg:py-3">
                 <PowerOutline class="h-5 w-5 shrink-0" />
@@ -80,7 +79,7 @@ const Admin: Component = () => {
                 </div>
               </div>
             </div>
-          </LogoutModal>
+          </LogoutModalWrapper>
         </div>
       </div>
 

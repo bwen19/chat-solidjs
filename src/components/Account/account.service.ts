@@ -31,19 +31,18 @@ export const useUpdateProfile = () => {
   const updateUser = useFetchPrivate(UpdateUserConfig);
 
   const [loading, setLoading] = createSignal(false);
-  const [fields, setFields] = createStore({ nickname: "", bio: "" });
+  const [fields, setFields] = createStore({ nickname: "" });
 
   const handleUpdateProfile =
     (onClose: Accessor<void>): JSX.EventHandler<HTMLFormElement, Event> =>
     async (ev) => {
       ev.preventDefault();
-      if (fields.nickname || fields.bio) {
+      if (fields.nickname) {
         setLoading(true);
         try {
           const resp = await updateUser({
-            user_id: state.user?.id,
+            userId: state.user?.id,
             nickname: fields.nickname || undefined,
-            bio: fields.bio || undefined,
           });
           updateState(resp.user);
           setToast("更改成功", "success");
@@ -77,8 +76,8 @@ export const useChangePassword = () => {
         setLoading(true);
         try {
           await changePassword({
-            old_password: fields.oldPassword,
-            new_password: fields.newPassword,
+            oldPassword: fields.oldPassword,
+            newPassword: fields.newPassword,
           });
           setToast("密码更改成功", "success");
           onClose();

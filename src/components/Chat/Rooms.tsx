@@ -2,9 +2,8 @@ import { Component, createMemo, createSignal, For, Show } from "solid-js";
 import { RoomInfo } from "@/api";
 import { useHomeContext } from "@/pages/Home/HomeContext";
 import { fmtLastDate } from "@/utils/time";
-import { Avatar, SearchBox } from "../common";
-import { AddOutline } from "../icons";
-import { NewRoomModal } from "./Chat.Widgets";
+import { Avatar, SearchBox, AddOutline } from "../common";
+import { NewRoomModalWrapper } from "./Chat.Widgets";
 
 const RoomItem: Component<{ item: RoomInfo }> = (props) => {
   const [homeState, { navRoom }] = useHomeContext();
@@ -38,7 +37,7 @@ const RoomItem: Component<{ item: RoomInfo }> = (props) => {
             {props.item.name}
           </p>
           <p class="shrink-0 text-xs" classList={{ "text-gray-400 group-hover:text-white": !selected() }}>
-            <Show when={latestMsg()}>{fmtLastDate(latestMsg().send_at, homeState.today)}</Show>
+            <Show when={latestMsg()}>{fmtLastDate(latestMsg().sendAt, homeState.today)}</Show>
           </p>
         </div>
         <div class="mt-1 flex items-center justify-between space-x-2">
@@ -78,11 +77,11 @@ const Rooms: Component = () => {
           CHAT ROOMS
           <span class="ml-2 font-bold text-sky-700">{counts()}</span>
         </p>
-        <NewRoomModal>
+        <NewRoomModalWrapper>
           <div class="cursor-pointer rounded-full p-2 text-sky-600 hover:bg-gray-300 active:text-sky-500">
             <AddOutline class="w-h h-5" />
           </div>
-        </NewRoomModal>
+        </NewRoomModalWrapper>
       </div>
       <div class="hover:scrollbar no-scrollbar overflow-y-scroll">
         <ul class="divide-y divide-gray-300">

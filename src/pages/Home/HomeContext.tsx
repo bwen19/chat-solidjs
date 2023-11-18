@@ -1,6 +1,6 @@
 import { createContext, onCleanup, onMount, ParentComponent, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
-import { EventData, FriendInfo, RoomInfo } from "@/api";
+import { ClientEvent, FriendInfo, RoomInfo } from "@/api";
 import { useAppContext } from "@/AppContext";
 import { todayEndTime } from "@/utils/time";
 import { WebSocketService } from "./websocket.service";
@@ -25,14 +25,14 @@ type HomeContextValue = [
     navHome: (currPage: PageName) => void;
     navRoom: (roomId: number) => void;
     navFriend: (friendId: number) => void;
-    sendMessage: (action: string, data: EventData) => void;
+    sendMessage: (evt: ClientEvent) => void;
   },
 ];
 
 const HomeContext = createContext<HomeContextValue>();
 
 export const HomeContextProvider: ParentComponent = (props) => {
-  const [state, { setToast }] = useAppContext();
+  const [_, { setToast }] = useAppContext();
   const [homeState, setHomeState] = createStore<HomeContextState>({
     currPage: "chat",
     currRoom: 0,
@@ -62,7 +62,7 @@ export const HomeContextProvider: ParentComponent = (props) => {
   const navFriend = (friendId: number) => setHomeState("currFriend", friendId);
 
   const ws = new WebSocketService(setHomeState, setToast);
-  const sendMessage = (action: string, data: EventData) => ws.sendWsMessage(action, data);
+  const sendMessage = (evt: ClientEvent) => ws.sendWsMessage(evt);
 
   onMount(() => ws.connect(homeState.today));
   onCleanup(() => ws.disconnect());

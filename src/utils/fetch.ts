@@ -36,7 +36,7 @@ export const useFetchPrivate = <T, P>(config: ApiConfig<T, P>) => {
 
   let url = config.url;
   let method = config.method;
-  let body: string | undefined;
+  let body: string | undefined = undefined;
 
   const fetchWithToken = async <T>(token: string): Promise<T> => {
     return fetch(url, {
@@ -48,15 +48,11 @@ export const useFetchPrivate = <T, P>(config: ApiConfig<T, P>) => {
   };
 
   const fetchPrivate = async (param: P): Promise<T> => {
-    if (config.method === "GET") {
-      if (config.path) {
-        url = `${config.url}/${param}`;
-        body = undefined;
-      } else {
-        const query = new URLSearchParams(Object.entries(param).filter((v) => typeof v[1] !== "undefined")).toString();
-        url = `${config.url}?${query}`;
-        body = undefined;
-      }
+    if (config.path) {
+      url = `${config.url}/${param}`;
+    } else if (config.method === "GET") {
+      const query = new URLSearchParams(Object.entries(param).filter((v) => typeof v[1] !== "undefined")).toString();
+      url = `${config.url}?${query}`;
     } else {
       body = JSON.stringify(param);
     }

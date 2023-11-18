@@ -1,12 +1,13 @@
 import { createSignal } from "solid-js";
 import { useAppContext } from "@/AppContext";
 import { LogoutConfig } from "@/api";
-import { useFetchAuth } from "@/utils/fetch";
+import { useFetchAuth } from "./fetch";
 
 export const useLogout = (clean = true) => {
-  const [state, { setToast, signOut }] = useAppContext();
-  const [loading, setLoading] = createSignal(false);
+  const [_, { setToast, signOut }] = useAppContext();
   const logout = useFetchAuth(LogoutConfig);
+
+  const [loading, setLoading] = createSignal(false);
 
   const handleLogout = async () => {
     setLoading(true);

@@ -2,7 +2,7 @@ import { createEffect, createMemo, on } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { NewRoomRequest } from "@/api";
+import { ClientEvent } from "@/api";
 
 export type UserCandidate = {
   id: number;
@@ -16,9 +16,9 @@ export const useNewRoom = () => {
   const [state, { setToast }] = useAppContext();
   const [homeState, { sendMessage }] = useHomeContext();
   const [newRoom, setNewRoom] = createStore({
-    total: 1,
+    total: 0,
     name: "",
-    candidates: [{ id: state.user?.id, name: state.user?.nickname, avatar: state.user?.avatar, selected: true, fixed: true }],
+    candidates: [],
   });
 
   const friendList = createMemo(() => homeState.friends.filter((x) => x.status === "accepted").map((x) => x.id));
@@ -74,14 +74,14 @@ export const useNewRoom = () => {
       setToast("房间名要大于2个字符", "error");
       return;
     }
-    const members_id = newRoom.candidates.filter((x) => x.selected).map((x) => x.id);
-    if (members_id.length < 3) {
-      setToast("房间人数不能小于3", "error");
+    const membersId = newRoom.candidates.filter((x) => x.selected).map((x) => x.id);
+    if (membersId.length < 2) {
+      setToast("人数不能小于2", "error");
       return;
     }
 
-    const req: NewRoomRequest = { name: newRoom.name, members_id };
-    sendMessage("new-room", req);
+    const evt: ClientEvent = { action: "new-room", data: { name: newRoom.name, membersId } };
+    sendMessage(evt);
   };
 
   return { newRoom, toggleSelection, setName, createRoom };

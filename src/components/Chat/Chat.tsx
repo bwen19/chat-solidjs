@@ -1,7 +1,6 @@
 import { Component, createEffect, createMemo, createSignal, on, Show } from "solid-js";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { Avatar } from "../common";
-import { ChatOutline, CloseOutline, MenuOutline } from "../icons";
+import { Avatar, ChatOutline, CloseOutline, MenuOutline } from "../common";
 import Members from "./Members";
 import Messages from "./Messages";
 import Rooms from "./Rooms";
@@ -15,8 +14,8 @@ const ChatPage: Component = () => {
   createEffect(
     on(
       () => homeState.currRoom,
-      () => setOpenMore(false)
-    )
+      () => setOpenMore(false),
+    ),
   );
 
   return (

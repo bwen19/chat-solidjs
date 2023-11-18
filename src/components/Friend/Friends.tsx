@@ -1,9 +1,8 @@
 import { Component, createMemo, createSignal, For, Show } from "solid-js";
 import { FriendInfo } from "@/api";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { Avatar, SearchBox } from "../common";
-import { AddOutline, UserAddSolid } from "../icons";
-import { AddFriendModal } from "./Friend.Widgets";
+import { Avatar, SearchBox, AddOutline, UserAddSolid } from "../common";
+import { AddFriendModalWrapper } from "./Friend.Widgets";
 
 const FriendItem: Component<{ item: FriendInfo }> = (props) => {
   const [homeState, { navFriend }] = useHomeContext();
@@ -75,11 +74,11 @@ const Friends: Component = () => {
           MY FRIENDS
           <span class="ml-2 font-bold text-sky-600">{counts()}</span>
         </p>
-        <AddFriendModal>
+        <AddFriendModalWrapper>
           <div class="cursor-pointer rounded-full p-2 text-sky-600 hover:bg-gray-300 active:text-sky-500">
             <AddOutline class="w-h h-5" />
           </div>
-        </AddFriendModal>
+        </AddFriendModalWrapper>
       </div>
       <div class="hover:scrollbar no-scrollbar overflow-y-scroll">
         <ul class="divide-y divide-gray-300">

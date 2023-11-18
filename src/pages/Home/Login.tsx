@@ -1,12 +1,10 @@
 import { Component, Show } from "solid-js";
 import loginBgSrc from "@/assets/login-bg.jpg";
 import loginLeftSrc from "@/assets/login-left.png";
-import { useAppContext } from "@/AppContext";
-import { LockSolid, LogoName, Spin, UserSolid } from "@/components/icons";
-import { useLogin } from "./login.service";
+import { LockSolid, LogoName, Spin, UserSolid } from "@/components/common";
+import { useLogin } from "@/utils/useLogin";
 
 const Login: Component = () => {
-  const [state] = useAppContext();
   const { loading, handleSubmit, setFields } = useLogin(false);
 
   return (

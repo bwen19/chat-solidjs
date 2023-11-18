@@ -1,128 +1,177 @@
-import { FriendInfo, MemberInfo, RoomInfo, MessageInfo } from "./model";
+import {
+  AcceptFriendRequest,
+  AcceptFriendResponse,
+  AddFriendRequest,
+  AddFriendResponse,
+  AddMembersRequest,
+  AddMembersResponse,
+  DeleteFriendRequest,
+  DeleteFriendResponse,
+  DeleteMembersRequest,
+  DeleteMembersResponse,
+  DeleteRoomRequest,
+  DeleteRoomResponse,
+  InitializeRequest,
+  InitializeResponse,
+  LeaveRoomRequest,
+  NewMessageRequest,
+  NewMessageResponse,
+  NewRoomRequest,
+  NewRoomResponse,
+  RefuseFriendRequest,
+  RefuseFriendResponse,
+  UpdateRoomResponse,
+  UpdateRoomResquest,
+} from "./dto";
 
-export type InitializeRequest = {
-  // end_time: Date;
-  timestamp: number;
-};
-export type InitializeResponse = {
-  rooms: RoomInfo[];
-  friends: FriendInfo[];
-};
+// ============================== // ClientEvent // ============================== //
 
-export type NewMessageRequest = {
-  room_id: number;
-  content: string;
-  kind: string;
-};
-export type NewMessageResponse = {
-  message: MessageInfo;
-};
-
-export type AddFriendRequest = {
-  friend_id: number;
-};
-export type AddFriendResponse = {
-  friend: FriendInfo;
-};
-
-export type AcceptFriendRequest = {
-  friend_id: number;
-};
-export type AcceptFriendResponse = {
-  friend: FriendInfo;
-  room: RoomInfo;
+type CliInitialize = {
+  action: "initialize";
+  data: InitializeRequest;
 };
 
-export type RefuseFriendRequest = {
-  friend_id: number;
-};
-export type RefuseFriendResponse = {
-  friend_id: number;
+type CliNewMessage = {
+  action: "new-message";
+  data: NewMessageRequest;
 };
 
-export type DeleteFriendRequest = {
-  friend_id: number;
-};
-export type DeleteFriendResponse = {
-  friend_id: number;
-  room_id: number;
+type CliNewRoom = {
+  action: "new-room";
+  data: NewRoomRequest;
 };
 
-export type NewRoomRequest = {
-  name: string;
-  members_id: number[];
-};
-export type NewRoomResponse = {
-  room: RoomInfo;
+type CliUpdateRoom = {
+  action: "update-room";
+  data: UpdateRoomResquest;
 };
 
-export type UpdateRoomResquest = {
-  room_id: number;
-  name: string;
-};
-export type UpdateRoomResponse = {
-  room_id: number;
-  name: string;
+type CliDeleteRoom = {
+  action: "delete-room";
+  data: DeleteRoomRequest;
 };
 
-export type DeleteRoomRequest = {
-  room_id: number;
-};
-export type DeleteRoomResponse = {
-  room_id: number;
+type CliLeaveRoom = {
+  action: "leave-room";
+  data: LeaveRoomRequest;
 };
 
-export type LeaveRoomRequest = {
-  room_id: number;
+type CliAddMembers = {
+  action: "add-members";
+  data: AddMembersRequest;
 };
 
-export type AddMembersRequest = {
-  room_id: number;
-  members_id: number[];
-};
-export type AddMembersResponse = {
-  room_id: number;
-  members: MemberInfo[];
+type CliDeleteMembers = {
+  action: "delete-members";
+  data: DeleteMembersRequest;
 };
 
-export type DeleteMembersRequest = {
-  room_id: number;
-  members_id: number[];
-};
-export type DeleteMembersResponse = {
-  room_id: number;
-  members_id: number[];
+type CliAddFriend = {
+  action: "add-friend";
+  data: AddFriendRequest;
 };
 
-// ---------------- WebsocketEvent ---------------- //
-
-export type EventData =
-  | string
-  | InitializeRequest
-  | InitializeResponse
-  | NewMessageRequest
-  | NewMessageResponse
-  | AddFriendRequest
-  | AddFriendResponse
-  | AcceptFriendRequest
-  | AcceptFriendResponse
-  | RefuseFriendRequest
-  | RefuseFriendResponse
-  | DeleteFriendRequest
-  | DeleteFriendResponse
-  | NewRoomRequest
-  | NewRoomResponse
-  | UpdateRoomResquest
-  | UpdateRoomResponse
-  | DeleteRoomRequest
-  | DeleteRoomResponse
-  | LeaveRoomRequest
-  | AddMembersRequest
-  | AddMembersResponse
-  | DeleteMembersRequest
-  | DeleteMembersResponse;
-
-export type WebsocketEvent = {
-  action: string;
-  data: EventData;
+type CliAcceptFriend = {
+  action: "accept-friend";
+  data: AcceptFriendRequest;
 };
+
+type CliRefuseFriend = {
+  action: "refuse-friend";
+  data: RefuseFriendRequest;
+};
+
+type CliDeleteFriend = {
+  action: "delete-friend";
+  data: DeleteFriendRequest;
+};
+
+export type ClientEvent =
+  | CliInitialize
+  | CliNewMessage
+  | CliNewRoom
+  | CliUpdateRoom
+  | CliDeleteRoom
+  | CliLeaveRoom
+  | CliAddMembers
+  | CliDeleteMembers
+  | CliAddFriend
+  | CliAcceptFriend
+  | CliRefuseFriend
+  | CliDeleteFriend;
+
+// ============================== // ServerEvent // ============================== //
+
+type SrvErrMessage = {
+  action: "toast";
+  data: string;
+};
+
+type SrvInitialize = {
+  action: "initialize";
+  data: InitializeResponse;
+};
+
+type SrvNewMessage = {
+  action: "new-message";
+  data: NewMessageResponse;
+};
+
+type SrvNewRoom = {
+  action: "new-room";
+  data: NewRoomResponse;
+};
+
+type SrvUpdateRoom = {
+  action: "update-room";
+  data: UpdateRoomResponse;
+};
+
+type SrvDeleteRoom = {
+  action: "delete-room";
+  data: DeleteRoomResponse;
+};
+
+type SrvAddMembers = {
+  action: "add-members";
+  data: AddMembersResponse;
+};
+
+type SrvDeleteMembers = {
+  action: "delete-members";
+  data: DeleteMembersResponse;
+};
+
+type SrvAddFriend = {
+  action: "add-friend";
+  data: AddFriendResponse;
+};
+
+type SrvAcceptFriend = {
+  action: "accept-friend";
+  data: AcceptFriendResponse;
+};
+
+type SrvRefuseFriend = {
+  action: "refuse-friend";
+  data: RefuseFriendResponse;
+};
+
+type SrvDeleteFriend = {
+  action: "delete-friend";
+  data: DeleteFriendResponse;
+};
+
+export type ServerEvent =
+  | SrvErrMessage
+  | SrvInitialize
+  | SrvNewMessage
+  | SrvNewRoom
+  | SrvUpdateRoom
+  | SrvDeleteRoom
+  | SrvAddMembers
+  | SrvDeleteMembers
+  | SrvAddFriend
+  | SrvAcceptFriend
+  | SrvRefuseFriend
+  | SrvDeleteFriend;

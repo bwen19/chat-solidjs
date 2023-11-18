@@ -8,7 +8,7 @@ type IRequest = (token: string) => void;
 let requestQueue: IRequest[] = [];
 
 const useRenewToken = () => {
-  const [state, { signOut, updateState, setToast }] = useAppContext();
+  const [_, { signOut, updateState, setToast }] = useAppContext();
   const renewTokenApi = useFetchAuth(RenewTokenConfig);
 
   const renewToken = async <T>(cb: (token: string) => Promise<T>): Promise<T> => {
@@ -21,10 +21,10 @@ const useRenewToken = () => {
     isRenewing = true;
 
     return renewTokenApi()
-      .then(({ access_token }) => {
-        updateState(null, access_token);
-        requestQueue.forEach((request) => request(access_token));
-        return cb(access_token);
+      .then(({ accessToken }) => {
+        updateState(null, accessToken);
+        requestQueue.forEach((request) => request(accessToken));
+        return cb(accessToken);
       })
       .catch(() => {
         setToast("You login has expired!", "error");

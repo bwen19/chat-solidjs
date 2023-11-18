@@ -1,24 +1,24 @@
-import { UserInfo } from "./model";
+import { FriendInfo, MemberInfo, MessageInfo, RoomInfo, UserInfo } from "./model";
 
 // ============================== // Auth // ============================== //
 
 export type LoginRequest = {
   username: string;
   password: string;
-  is_admin: boolean;
+  isAdmin: boolean;
 };
 
 export type LoginResponse = {
   user: UserInfo;
-  access_token: string;
+  accessToken: string;
 };
 
 export type AutoLoginRequest = {
-  is_admin: boolean;
+  isAdmin: boolean;
 };
 
 export type RenewTokenResponse = {
-  access_token: string;
+  accessToken: string;
 };
 
 // ============================== // User // ============================== //
@@ -34,12 +34,11 @@ export type CreateUserResponse = {
 };
 
 export type UpdateUserRequest = {
-  user_id: number;
+  userId: number;
   username?: string;
   password?: string;
   nickname?: string;
   avatar?: string;
-  bio?: string;
   role?: string;
   deleted?: boolean;
 };
@@ -53,14 +52,13 @@ export type ChangeAvatarResponse = {
 };
 
 export type ChangePasswordRequest = {
-  old_password: string;
-  new_password: string;
+  oldPassword: string;
+  newPassword: string;
 };
 
 export type ListUsersRequest = {
-  page_id?: number;
-  page_size?: number;
-  keyword?: string;
+  pageId: number;
+  pageSize: number;
 };
 
 export type ListUsersResponse = {
@@ -72,6 +70,118 @@ export type FindUserResponse = {
   user?: UserInfo;
 };
 
+// ============================== // Message // ============================== //
+
+export type InitializeRequest = {
+  timestamp: number;
+};
+
+export type InitializeResponse = {
+  rooms: RoomInfo[];
+  friends: FriendInfo[];
+};
+
+export type NewMessageRequest = {
+  roomId: number;
+  content: string;
+  kind: string;
+};
+
+export type NewMessageResponse = {
+  message: MessageInfo;
+};
+
 export type SendFileResponse = {
-  file_url: string;
+  fileUrl: string;
+};
+
+// ============================== // Room // ============================== //
+
+export type NewRoomRequest = {
+  name: string;
+  membersId: number[];
+};
+
+export type NewRoomResponse = {
+  room: RoomInfo;
+};
+
+export type UpdateRoomResquest = {
+  roomId: number;
+  name: string;
+};
+
+export type UpdateRoomResponse = {
+  roomId: number;
+  name: string;
+};
+
+export type DeleteRoomRequest = {
+  roomId: number;
+};
+
+export type DeleteRoomResponse = {
+  roomId: number;
+};
+
+export type LeaveRoomRequest = {
+  roomId: number;
+};
+
+// ============================== // Member // ============================== //
+
+export type AddMembersRequest = {
+  roomId: number;
+  membersId: number[];
+};
+
+export type AddMembersResponse = {
+  roomId: number;
+  members: MemberInfo[];
+};
+
+export type DeleteMembersRequest = {
+  roomId: number;
+  membersId: number[];
+};
+
+export type DeleteMembersResponse = {
+  roomId: number;
+  membersId: number[];
+};
+
+// ============================== // Friend // ============================== //
+
+export type AddFriendRequest = {
+  friendId: number;
+};
+
+export type AddFriendResponse = {
+  friend: FriendInfo;
+};
+
+export type AcceptFriendRequest = {
+  friendId: number;
+};
+
+export type AcceptFriendResponse = {
+  friend: FriendInfo;
+  room: RoomInfo;
+};
+
+export type RefuseFriendRequest = {
+  friendId: number;
+};
+
+export type RefuseFriendResponse = {
+  friendId: number;
+};
+
+export type DeleteFriendRequest = {
+  friendId: number;
+};
+
+export type DeleteFriendResponse = {
+  friendId: number;
+  roomId: number;
 };

@@ -1,14 +1,13 @@
+import { Accessor, JSX, createEffect, createSignal, on } from "solid-js";
+import { createStore, produce } from "solid-js/store";
 import { useAppContext } from "@/AppContext";
 import { CreateUserConfig, DeleteUserConfig, ListUsersConfig, UpdateUserConfig, UpdateUserRequest, UserInfo } from "@/api";
 import { useFetchPrivate } from "@/utils/fetch";
-import { Accessor, JSX, createEffect, createSignal, on } from "solid-js";
-import { createStore, produce } from "solid-js/store";
 
 type UsersData = {
   status: "Idle" | "Fetching" | "Failed" | "Done";
   pageId: number;
   pageSize: number;
-  keyword?: string;
   total: number;
   data: UserInfo[];
 };
@@ -31,12 +30,17 @@ export const useListUsers = () => {
 
   const pageDown = () => {
     if (users.pageId > 1) {
-      setUsers(produce((s) => (s.pageId = s.pageId - 1)));
+      setUsers(
+        produce((s) => {
+          s.pageId = s.pageId - 1;
+          s.status = "Idle";
+        }),
+      );
     }
   };
 
   const pageUp = () => {
-    const numStart = users.pageId * users.pageSize + 1;
+    const numStart = users.pageId * users.pageSize;
     if (numStart < users.total) {
       setUsers(
         produce((s) => {
@@ -49,16 +53,6 @@ export const useListUsers = () => {
 
   const listUsers = useFetchPrivate(ListUsersConfig);
 
-  const handleSearch = async (keyword?: string) => {
-    setUsers(
-      produce((s) => {
-        s.pageId = 1;
-        s.keyword = keyword ? keyword + "%" : undefined;
-        s.status = "Idle";
-      }),
-    );
-  };
-
   const reload = () => setUsers("status", "Idle");
 
   createEffect(
@@ -69,9 +63,8 @@ export const useListUsers = () => {
           setUsers("status", "Fetching");
           try {
             const resp = await listUsers({
-              page_id: users.pageId,
-              page_size: users.pageSize,
-              keyword: users.keyword,
+              pageId: users.pageId,
+              pageSize: users.pageSize,
             });
             setUsers(
               produce((s) => {
@@ -94,16 +87,16 @@ export const useListUsers = () => {
     ),
   );
 
-  return { users, pageInfo, pageDown, pageUp, handleSearch, reload };
+  return { users, pageInfo, pageDown, pageUp, reload };
 };
 
 export const useDeleteUser = (cb: Accessor<void>) => {
   const [_, { setToast }] = useAppContext();
-  const deleteUsers = useFetchPrivate(DeleteUserConfig);
+  const deleteUser = useFetchPrivate(DeleteUserConfig);
 
   const handleDeleteUser = async (userId: number) => {
     try {
-      await deleteUsers(userId);
+      await deleteUser(userId);
       cb();
     } catch (err) {
       if (err instanceof Error) {
@@ -164,7 +157,7 @@ export const useUpdateUser = (user: UserInfo, cb: Accessor<void>) => {
     setLoading(true);
     try {
       const req: UpdateUserRequest = {
-        user_id: user.id,
+        userId: user.id,
       };
 
       let npar = 0;

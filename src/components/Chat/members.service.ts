@@ -2,7 +2,7 @@ import { createEffect, createMemo, on } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { AddMembersRequest, DeleteMembersRequest } from "@/api";
+import { ClientEvent } from "@/api";
 import { UserCandidate } from "./rooms.service";
 
 export const useAddMembers = () => {
@@ -13,7 +13,7 @@ export const useAddMembers = () => {
     candidates: [],
   });
 
-  const memberIds = createMemo(() => {
+  const membersId = createMemo(() => {
     const room = homeState.rooms.find((r) => r.id === homeState.currRoom);
     return room?.members?.map((m) => m.id) || [];
   });
@@ -33,7 +33,7 @@ export const useAddMembers = () => {
         for (let i of friendSet) {
           const friend = homeState.friends.find((x) => x.id === i);
           if (friend) {
-            if (memberIds().includes(friend.id)) {
+            if (membersId().includes(friend.id)) {
               s.candidates.push({ id: friend.id, name: friend.nickname, avatar: friend.avatar, selected: true, fixed: true });
             } else {
               s.candidates.push({ id: friend.id, name: friend.nickname, avatar: friend.avatar, selected: false, fixed: false });
@@ -64,14 +64,14 @@ export const useAddMembers = () => {
   };
 
   const addMembers = async () => {
-    const members_id = newMembers.candidates.filter((x) => x.selected && !x.fixed).map((x) => x.id);
-    if (members_id.length === 0) {
+    const membersId = newMembers.candidates.filter((x) => x.selected && !x.fixed).map((x) => x.id);
+    if (membersId.length === 0) {
       setToast("人数不能为空", "error");
       return;
     }
 
-    const req: AddMembersRequest = { room_id: homeState.currRoom, members_id };
-    sendMessage("add-members", req);
+    const evt: ClientEvent = { action: "add-members", data: { roomId: homeState.currRoom, membersId } };
+    sendMessage(evt);
   };
 
   return { newMembers, addSelection, addMembers };
@@ -138,14 +138,14 @@ export const useDeleteMembers = () => {
   };
 
   const deleteMembers = () => {
-    const members_id = delMembers.candidates.filter((x) => x.selected && !x.fixed).map((x) => x.id);
-    if (members_id.length === 0) {
+    const membersId = delMembers.candidates.filter((x) => x.selected && !x.fixed).map((x) => x.id);
+    if (membersId.length === 0) {
       setToast("人数不能为空", "error");
       return;
     }
 
-    const req: DeleteMembersRequest = { room_id: homeState.currRoom, members_id };
-    sendMessage("delete-members", req);
+    const evt: ClientEvent = { action: "delete-members", data: { roomId: homeState.currRoom, membersId } };
+    sendMessage(evt);
   };
 
   return { delMembers, delSelection, deleteMembers };

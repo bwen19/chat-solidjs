@@ -1,12 +1,12 @@
-import { createSignal, JSX } from "solid-js";
+import { createSignal, JSX, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
 import { useNavigate } from "@solidjs/router";
 import { useAppContext } from "@/AppContext";
 import { LoginConfig } from "@/api";
-import { useFetchAuth } from "@/utils/fetch";
+import { useFetchAuth } from "./fetch";
 
-export const useLogin = (is_admin: boolean) => {
-  const [_, { signIn, setToast }] = useAppContext();
+export const useLogin = (isAdmin: boolean) => {
+  const [state, { signIn, signOut, setToast }] = useAppContext();
   const navigate = useNavigate();
   const login = useFetchAuth(LoginConfig);
 
@@ -22,23 +22,29 @@ export const useLogin = (is_admin: boolean) => {
       const rsp = await login({
         username: fields.username,
         password: fields.password,
-        is_admin: is_admin,
+        isAdmin: isAdmin,
       });
 
-      signIn(rsp.user, rsp.access_token);
-      if (is_admin) {
-        navigate("/admin");
-      } else {
-        navigate("/");
-      }
-    } catch (err) {
+      signIn(rsp.user, rsp.accessToken);
 
+      if (isAdmin) navigate("/admin");
+      else navigate("/");
+    } catch (err) {
       if (err instanceof Error && err.message) {
         setToast(err.message, "error");
       }
     }
     setLoading(false);
   };
+
+  onMount(() => {
+    if (isAdmin && state.isLoggedIn && state.user?.role === "user") {
+      signOut();
+    } else if (state.isLoggedIn || state.persist) {
+      if (isAdmin) navigate("/admin");
+      else navigate("/");
+    }
+  });
 
   return { loading, handleSubmit, setFields };
 };

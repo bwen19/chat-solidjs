@@ -1,6 +1,6 @@
 import { lazy } from "solid-js";
 import { Navigate, RouteDefinition } from "@solidjs/router";
-import AdminGuard from "@/components/guards/AdminGuard";
+import AdminGuard from "./AdminGuard";
 
 export const adminRoutes: RouteDefinition[] = [
   {

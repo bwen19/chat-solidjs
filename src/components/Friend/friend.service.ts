@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import { AcceptFriendRequest, AddFriendRequest, DeleteFriendRequest, FindUserConfig, RefuseFriendRequest, UserInfo } from "@/api";
+import { ClientEvent, FindUserConfig, UserInfo } from "@/api";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
 import { useFetchPrivate } from "@/utils/fetch";
@@ -8,23 +8,23 @@ export const useFriend = () => {
   const [_, { sendMessage }] = useHomeContext();
 
   const handleAddFriend = (userId: number) => {
-    const req: AddFriendRequest = { friend_id: userId };
-    sendMessage("add-friend", req);
+    const evt: ClientEvent = { action: "add-friend", data: { friendId: userId } };
+    sendMessage(evt);
   };
 
   const handleAcceptFriend = (userId: number) => {
-    const req: AcceptFriendRequest = { friend_id: userId };
-    sendMessage("accept-friend", req);
+    const evt: ClientEvent = { action: "accept-friend", data: { friendId: userId } };
+    sendMessage(evt);
   };
 
   const handleRefuseFriend = (userId: number) => {
-    const req: RefuseFriendRequest = { friend_id: userId };
-    sendMessage("refuse-friend", req);
+    const evt: ClientEvent = { action: "refuse-friend", data: { friendId: userId } };
+    sendMessage(evt);
   };
 
   const handleDeleteFriend = (userId: number) => {
-    const req: DeleteFriendRequest = { friend_id: userId };
-    sendMessage("delete-friend", req);
+    const evt: ClientEvent = { action: "delete-friend", data: { friendId: userId } };
+    sendMessage(evt);
   };
 
   return { handleAddFriend, handleAcceptFriend, handleRefuseFriend, handleDeleteFriend };

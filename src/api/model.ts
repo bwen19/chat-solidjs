@@ -6,54 +6,64 @@ export interface ApiConfig<T extends unknown = unknown, P extends unknown = unkn
   requestData?: P;
 }
 
+export type UserRole = "admin" | "user";
+
 export type UserInfo = {
   id: number;
   username: string;
   avatar: string;
   nickname: string;
-  role: string;
-  room_id: number;
+  role: UserRole;
+  roomId: number;
   deleted: boolean;
-  create_at: Date;
+  createAt: Date;
 };
+
+export type FriendStatue = "adding" | "accepted" | "deleted";
 
 export type FriendInfo = {
   id: number;
   username: string;
   nickname: string;
   avatar: string;
-  status: string;
-  room_id: number;
+  status: FriendStatue;
+  roomId: number;
   first: boolean;
-  create_at: Date;
+  createAt: Date;
 };
+
+export type RoomCategory = "personal" | "private" | "public";
 
 export type RoomInfo = {
   id: number;
   name: string;
   cover: string;
-  category: string;
+  category: RoomCategory;
   unreads: number;
-  create_at: string;
+  createAt: string;
   members: MemberInfo[];
   messages: MessageInfo[];
 };
+
+export type MemberRank = "owner" | "manager" | "member";
 
 export type MemberInfo = {
   id: number;
   name: string;
   avatar: string;
-  rank: string;
-  join_at: Date;
+  rank: MemberRank;
+  joinAt: Date;
 };
 
+export type MessageKind = "text" | "file";
+
 export type MessageInfo = {
-  room_id: number;
-  sender_id: number;
+  roomId: number;
+  senderId: number;
   name: string;
   avatar: string;
   content: string;
-  kind: string;
+  kind: MessageKind;
   divide: boolean;
-  send_at: Date;
+  sendAt: Date;
 };

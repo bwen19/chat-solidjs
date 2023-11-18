@@ -1,11 +1,8 @@
 import { Component, Match, Switch } from "solid-js";
 import homeBgSrc from "@/assets/home-bg.jpg";
-import Chat from "@/components/Chat";
-import Friend from "@/components/Friend";
-import { Badge } from "@/components/common";
-import { ChatOutline, FriendOutline, Logo } from "@/components/icons";
+import { Account, Chat, Friend } from "@/components";
+import { Badge, ChatOutline, FriendOutline, Logo } from "@/components/common";
 import { HomeContextProvider, useHomeContext } from "./HomeContext";
-import AccountSetting from "./AccountSetting";
 import { DisconnectionModal } from "./Home.Widgets";
 
 const Home: Component = () => {
@@ -41,7 +38,7 @@ const Home: Component = () => {
           </div>
 
           <div class="h-16 shrink-0">
-            <AccountSetting />
+            <Account />
           </div>
         </div>
         <div class="h-full grow">

@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, Component, splitProps, For } from "solid-js";
+import { onCleanup, Component, splitProps, For } from "solid-js";
 import { createStore } from "solid-js/store";
 
 // ========================// Hand //======================== //

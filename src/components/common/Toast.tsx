@@ -1,7 +1,7 @@
 import { Component, createEffect, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 import { useAppContext } from "@/AppContext";
-import { CloseOutline, InfoOutline, WarnOutline } from "../icons";
+import { CloseOutline, InfoOutline, WarnOutline } from "./icons";
 
 const Toast: Component = () => {
   const [state, { setToast }] = useAppContext();

@@ -1,11 +1,8 @@
 import { Component, createEffect, createMemo, For, JSX, on, Show } from "solid-js";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import clickOutside from "@/utils/clickOutside";
-import { EmojiPicker } from "../common";
-import { ClipOutline, SmileOutline, SendSolid, SpinProgress } from "../icons";
+import { EmojiPicker, ClipOutline, SmileOutline, SendSolid, SpinProgress } from "../common";
 import { useSendMessage, useSendFile } from "./messages.service";
 import MessageItem from "./MessageItem";
-false && clickOutside;
 
 const Messages: Component = () => {
   const [homeState] = useHomeContext();

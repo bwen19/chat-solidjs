@@ -6,3 +6,4 @@ export { default as Modal } from "./Modal";
 export { default as RoleBanner } from "./RoleBanner";
 export { default as SearchBox } from "./SearchBox";
 export { default as Toast } from "./Toast";
+export * from "./icons";

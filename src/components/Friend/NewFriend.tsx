@@ -1,8 +1,7 @@
 import { Component, createMemo, For, Show } from "solid-js";
 import { FriendInfo } from "@/api";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { Avatar } from "../common";
-import { AcceptOutline, RefuseOutline } from "../icons";
+import { Avatar, AcceptOutline, RefuseOutline } from "../common";
 import { useFriend } from "./friend.service";
 
 const IncomingFriend: Component<{ friend: FriendInfo }> = (props) => {
@@ -36,8 +35,8 @@ const OutgoingFriend: Component<{ friend: FriendInfo }> = (props) => {
 const NewFriend: Component = () => {
   const [homeState] = useHomeContext();
 
-  const incomingFriends = createMemo(() => homeState.friends.filter((f) => f.status === "adding" && !f.first));
-  const outgoingFriends = createMemo(() => homeState.friends.filter((f) => f.status === "adding" && f.first));
+  const incomingFriends = createMemo(() => homeState.friends.filter((f) => f.status === "adding" && f.first));
+  const outgoingFriends = createMemo(() => homeState.friends.filter((f) => f.status === "adding" && !f.first));
 
   return (
     <div class="h-full grow bg-gray-100">
@@ -48,7 +47,7 @@ const NewFriend: Component = () => {
         <div class="hover:scrollbar no-scrollbar overflow-y-scroll p-3">
           <p class="font-semibold text-gray-500">Incoming:</p>
           <Show when={incomingFriends().length > 0} fallback={<p class="mt-5 text-center text-gray-400">No new friend.</p>}>
-            <ul class="my-2 mx-2 space-y-2">
+            <ul class="mx-2 my-2 space-y-2">
               <For each={incomingFriends()}>{(item) => <IncomingFriend friend={item} />}</For>
             </ul>
           </Show>
@@ -56,7 +55,7 @@ const NewFriend: Component = () => {
         <div class="hover:scrollbar no-scrollbar overflow-y-scroll p-3">
           <p class="font-semibold text-gray-500">Outgoing:</p>
           <Show when={outgoingFriends().length > 0} fallback={<p class="mt-5 text-center text-gray-400">No request has been sent yet.</p>}>
-            <ul class="my-2 mx-2 space-y-2">
+            <ul class="mx-2 my-2 space-y-2">
               <For each={outgoingFriends()}>{(item) => <OutgoingFriend friend={item} />}</For>
             </ul>
           </Show>

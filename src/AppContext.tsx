@@ -2,6 +2,8 @@ import { Accessor, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { UserInfo } from "@/api";
 
+const PERSIST_KEY: string = "persist";
+
 export type ToastKind = "success" | "error";
 type ToastState = {
   open: boolean;
@@ -11,6 +13,7 @@ type ToastState = {
 
 type AppContextState = {
   user?: UserInfo;
+  persist: boolean;
   isLoggedIn: boolean;
   token: string;
   toast: ToastState;
@@ -30,17 +33,20 @@ const AppContext = createContext<AppContextValue>();
 
 export const AppContextProvider: ParentComponent = (props) => {
   const [state, setState] = createStore<AppContextState>({
+    persist: localStorage.getItem(PERSIST_KEY) === "true" ? true : false,
     isLoggedIn: false,
     token: "",
     toast: { open: false, message: "", kind: "success" },
   });
 
   const signIn = (user: UserInfo, token: string) => {
-    setState({ isLoggedIn: true, user, token });
+    localStorage.setItem(PERSIST_KEY, "true");
+    setState({ persist: true, isLoggedIn: true, user, token });
   };
 
   const signOut = () => {
-    setState({ isLoggedIn: false, user: undefined, token: "" });
+    localStorage.setItem(PERSIST_KEY, "false");
+    setState({ persist: false, isLoggedIn: false, user: undefined, token: "" });
   };
 
   const updateState = (user?: UserInfo, token?: string) => {

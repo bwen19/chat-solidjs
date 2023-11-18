@@ -1,7 +1,6 @@
 import { Component, createMemo, Match, Switch } from "solid-js";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { Avatar, Confirm } from "../common";
-import { FriendOutline } from "../icons";
+import { Avatar, Confirm, FriendOutline } from "../common";
 import Friends from "./Friends";
 import NewFriend from "./NewFriend";
 import { useFriend } from "./friend.service";
@@ -48,7 +47,7 @@ const FriendPage: Component = () => {
                     </div>
                   </Confirm>
                   <button
-                    onClick={() => navRoom(friend().room_id)}
+                    onClick={() => navRoom(friend().roomId)}
                     type="button"
                     class="ml-6 rounded-md border bg-sky-700 px-6 py-1.5 text-white hover:bg-sky-600"
                   >

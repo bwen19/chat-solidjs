@@ -6,6 +6,7 @@ import { useFriend } from "./friend.service";
 
 const IncomingFriend: Component<{ friend: FriendInfo }> = (props) => {
   const { handleAcceptFriend, handleRefuseFriend } = useFriend();
+
   return (
     <li class="group flex cursor-default items-center space-x-3 rounded-md p-2 shadow-sm shadow-gray-400">
       <Avatar src={props.friend.avatar} class="h-8 w-8 shrink-0 rounded-full" />
@@ -34,7 +35,6 @@ const OutgoingFriend: Component<{ friend: FriendInfo }> = (props) => {
 
 const NewFriend: Component = () => {
   const [homeState] = useHomeContext();
-
   const incomingFriends = createMemo(() => homeState.friends.filter((f) => f.status === "adding" && f.first));
   const outgoingFriends = createMemo(() => homeState.friends.filter((f) => f.status === "adding" && !f.first));
 

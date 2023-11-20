@@ -3,12 +3,13 @@ import { MessageInfo } from "@/api";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
 import { fmtDividerDate, fmtSendTime } from "@/utils/time";
-import { Avatar, DownloadOutline } from "../common";
+import { Avatar, DownloadOutline } from "@/components/common";
 
 // ========================// MessageText //======================== //
 
 const MessageText: Component<{ item: MessageInfo }> = (props) => {
   const [state] = useAppContext();
+
   return (
     <Show
       when={state.user.id === props.item.senderId}
@@ -47,6 +48,7 @@ const MessageText: Component<{ item: MessageInfo }> = (props) => {
 
 const MessageFile: Component<{ item: MessageInfo }> = (props) => {
   const [state] = useAppContext();
+
   const [fileUrl, fileName, _] = props.item.content.split(" ");
   if (!fileUrl || !fileName) return null;
 

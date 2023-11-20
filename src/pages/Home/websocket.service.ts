@@ -14,6 +14,7 @@ import {
   InitializeResponse,
   ServerEvent,
   ClientEvent,
+  ChangeCoverResponse,
 } from "@/api";
 import { HomeContextState } from "./HomeContext";
 
@@ -52,7 +53,6 @@ export class WebSocketService {
 
     this.wsInstance.onmessage = (ev) => {
       const event = JSON.parse(ev.data) as ServerEvent;
-      console.log("receive ", event.action);
 
       switch (event.action) {
         case "toast":
@@ -66,6 +66,9 @@ export class WebSocketService {
           break;
         case "new-room":
           this.newRoom(event.data);
+          break;
+        case "change-cover":
+          this.changeCover(event.data);
           break;
         case "update-room":
           this.updateRoom(event.data);
@@ -182,6 +185,15 @@ export class WebSocketService {
     this.setHomeState(produce((s) => s.rooms.unshift(rsp.room)));
   }
 
+  private changeCover(rsp: ChangeCoverResponse) {
+    this.setHomeState(
+      produce((s) => {
+        const index = s.rooms.findIndex((x) => x.id === rsp.roomId);
+        if (index !== -1) s.rooms[index].cover = rsp.cover;
+      }),
+    );
+  }
+
   private updateRoom(rsp: UpdateRoomResponse) {
     this.setHomeState(
       produce((s) => {
@@ -241,7 +253,7 @@ export class WebSocketService {
 
   disconnect() {
     this.reconnectable = false;
-    this.wsInstance.close();
+    if (this.wsInstance) this.wsInstance.close();
     this.wsInstance = undefined;
   }
 }

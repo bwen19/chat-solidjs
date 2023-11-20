@@ -1,9 +1,8 @@
-import { Component, createMemo, createSignal, For, Show } from "solid-js";
-import { ClientEvent, MemberInfo } from "@/api";
-import { useAppContext } from "@/AppContext";
+import { Component, createSignal, For, Show } from "solid-js";
+import { ClientEvent, MemberInfo, MemberRank } from "@/api";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { Avatar, Confirm, SearchBox, UserSolid, SettingOutline } from "../common";
-import { ModifyMemberModalWrapper } from "./Chat.Widgets";
+import { Avatar, Confirm, SearchBox, UserSolid, SettingOutline } from "@/components/common";
+import { ModifyMemberModalWrapper } from "./Members.Widget";
 
 // ========================// MemberItem //======================== //
 
@@ -12,8 +11,6 @@ const MemberItem: Component<{ item: MemberInfo }> = (props) => {
     switch (props.item.rank) {
       case "owner":
         return "text-orange-600";
-      case "manager":
-        return "text-blue-600";
       default:
         return "text-gray-600";
     }
@@ -30,27 +27,17 @@ const MemberItem: Component<{ item: MemberInfo }> = (props) => {
 
 // ========================// Members //======================== //
 
-const Members: Component = () => {
-  const [state] = useAppContext();
+const Members: Component<{ members: MemberInfo[]; rank: MemberRank }> = (props) => {
   const [homeState, { sendMessage }] = useHomeContext();
-
-  const members = createMemo(() => {
-    const room = homeState.rooms.find((r) => r.id === homeState.currRoom);
-    return room?.members || [];
-  });
-  const rank = createMemo(() => {
-    const member = members().find((mb) => mb.id === state.user.id);
-    return member?.rank || "member";
-  });
 
   const [searchedMembers, setSearchedMembers] = createSignal<MemberInfo[]>([]);
   const [searching, setSearching] = createSignal(true);
   const handleSearch = (keyword: string) => {
-    const results = members().filter((m) => m.name.includes(keyword));
+    const results = props.members.filter((m) => m.name.includes(keyword));
     setSearchedMembers(results);
   };
 
-  const counts = () => (searching() ? searchedMembers().length : members().length);
+  const counts = () => (searching() ? searchedMembers().length : props.members.length);
 
   const handleDeleteRoom = () => {
     const evt: ClientEvent = { action: "delete-room", data: { roomId: homeState.currRoom } };
@@ -72,7 +59,7 @@ const Members: Component = () => {
           MEMBERS
           <span class="ml-2 text-sky-700">{counts()}</span>
         </p>
-        <Show when={["owner", "manager"].includes(rank())}>
+        <Show when={props.rank === "owner"}>
           <ModifyMemberModalWrapper>
             <div class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-gray-200 hover:text-sky-600 active:text-sky-500">
               <SettingOutline class="h-4 w-4" />
@@ -81,14 +68,14 @@ const Members: Component = () => {
         </Show>
       </div>
       <ul class="hover:scrollbar no-scrollbar grow overflow-y-scroll px-2 py-1">
-        <Show when={searching()} fallback={<For each={members()}>{(item) => <MemberItem item={item} />}</For>}>
+        <Show when={searching()} fallback={<For each={props.members}>{(item) => <MemberItem item={item} />}</For>}>
           <For each={searchedMembers()}>{(item) => <MemberItem item={item} />}</For>
         </Show>
       </ul>
 
       <div class="flex h-12 shrink-0 items-center justify-center border-t">
         <Show
-          when={rank() === "owner"}
+          when={props.rank === "owner"}
           fallback={
             <Confirm onConfirm={handleLeaveRoom}>
               <div class="cursor-pointer rounded-md border border-rose-500 px-2 text-rose-500 hover:bg-rose-500 hover:text-white active:bg-rose-300">Leave</div>

@@ -1,6 +1,6 @@
 import { useAppContext } from "@/AppContext";
 import { RenewTokenConfig } from "@/api";
-import { useFetchAuth } from "./fetch";
+import useAuthFetch from "./useAuthFetch";
 
 let isRenewing = false;
 
@@ -9,7 +9,7 @@ let requestQueue: IRequest[] = [];
 
 const useRenewToken = () => {
   const [_, { signOut, updateState, setToast }] = useAppContext();
-  const renewTokenApi = useFetchAuth(RenewTokenConfig);
+  const sendRenewToken = useAuthFetch(RenewTokenConfig);
 
   const renewToken = async <T>(cb: (token: string) => Promise<T>): Promise<T> => {
     if (isRenewing) {
@@ -20,7 +20,7 @@ const useRenewToken = () => {
 
     isRenewing = true;
 
-    return renewTokenApi()
+    return sendRenewToken()
       .then(({ accessToken }) => {
         updateState(null, accessToken);
         requestQueue.forEach((request) => request(accessToken));

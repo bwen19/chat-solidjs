@@ -3,7 +3,7 @@ import { useAppContext } from "@/AppContext";
 import { Avatar } from "@/components/common";
 import { LogoutModal } from "@/components";
 import clickOutside from "@/utils/clickOutside";
-import { ProfileModal, PasswordModal } from "./Account.Widgets";
+import { ProfileModal, PasswordModal } from "./Account.Widget";
 false && clickOutside;
 
 type MenuOptions = "none" | "main" | "profile" | "password" | "logout";

@@ -5,6 +5,7 @@ import {
   AddFriendResponse,
   AddMembersRequest,
   AddMembersResponse,
+  ChangeCoverResponse,
   DeleteFriendRequest,
   DeleteFriendResponse,
   DeleteMembersRequest,
@@ -122,6 +123,11 @@ type SrvNewRoom = {
   data: NewRoomResponse;
 };
 
+type SrvChangeCover = {
+  action: "change-cover";
+  data: ChangeCoverResponse;
+};
+
 type SrvUpdateRoom = {
   action: "update-room";
   data: UpdateRoomResponse;
@@ -167,6 +173,7 @@ export type ServerEvent =
   | SrvInitialize
   | SrvNewMessage
   | SrvNewRoom
+  | SrvChangeCover
   | SrvUpdateRoom
   | SrvDeleteRoom
   | SrvAddMembers

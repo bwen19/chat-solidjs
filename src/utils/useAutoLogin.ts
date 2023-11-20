@@ -1,11 +1,11 @@
 import { createSignal, onMount } from "solid-js";
 import { useAppContext } from "@/AppContext";
 import { AutoLoginConfig } from "@/api";
-import { useFetchAuth } from "./fetch";
+import useAuthFetch from "./useAuthFetch";
 
 const useAutoLogin = (isAdmin: boolean) => {
   const [state, { signIn, signOut, setToast }] = useAppContext();
-  const autoLogin = useFetchAuth(AutoLoginConfig);
+  const autoLogin = useAuthFetch(AutoLoginConfig);
 
   const [loading, setLoading] = createSignal(true);
 

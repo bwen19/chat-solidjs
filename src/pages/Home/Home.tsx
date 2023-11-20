@@ -3,7 +3,7 @@ import homeBgSrc from "@/assets/home-bg.jpg";
 import { Account, Chat, Friend } from "@/components";
 import { Badge, ChatOutline, FriendOutline, Logo } from "@/components/common";
 import { HomeContextProvider, useHomeContext } from "./HomeContext";
-import { DisconnectionModal } from "./Home.Widgets";
+import { DisconnectionModal } from "./Home.Widget";
 
 const Home: Component = () => {
   const [homeState, { navHome }] = useHomeContext();

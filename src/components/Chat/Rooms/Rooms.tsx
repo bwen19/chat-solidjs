@@ -2,8 +2,8 @@ import { Component, createMemo, createSignal, For, Show } from "solid-js";
 import { RoomInfo } from "@/api";
 import { useHomeContext } from "@/pages/Home/HomeContext";
 import { fmtLastDate } from "@/utils/time";
-import { Avatar, SearchBox, AddOutline } from "../common";
-import { NewRoomModalWrapper } from "./Chat.Widgets";
+import { Avatar, SearchBox, AddOutline } from "@/components/common";
+import { NewRoomModalWrapper } from "./Rooms.Widget";
 
 const RoomItem: Component<{ item: RoomInfo }> = (props) => {
   const [homeState, { navRoom }] = useHomeContext();

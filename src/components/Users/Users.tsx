@@ -3,7 +3,7 @@ import { UserInfo } from "@/api";
 import { fmtDate } from "@/utils/time";
 import { Avatar, Confirm, RoleBanner, ActiveSolid, InactiveSolid, TrashSolid } from "../common";
 import { useDeleteUser, useListUsers } from "./users.service";
-import { CreateUserButton, EditUserButton } from "./Users.Widgets";
+import { CreateUserButton, EditUserButton } from "./Users.Widget";
 
 const UserItem: Component<{ item: UserInfo; reload: Accessor<void> }> = (props) => {
   const handleDeleteUser = useDeleteUser(props.reload);

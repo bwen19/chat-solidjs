@@ -12,6 +12,42 @@ export const UserOutline: Component<{ class: string }> = (props) => {
   );
 };
 
+export const ClientOutline: Component<{ class: string }> = (props) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class={props.class}>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125z"
+      />
+    </svg>
+  );
+};
+
+export const RoomOutline: Component<{ class: string }> = (props) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class={props.class}>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"
+      />
+    </svg>
+  );
+};
+
+export const RefreshOutline: Component<{ class: string }> = (props) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class={props.class}>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+      />
+    </svg>
+  );
+};
+
 export const UserAddOutline: Component<{ class: string }> = (props) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class={props.class}>
@@ -19,6 +55,18 @@ export const UserAddOutline: Component<{ class: string }> = (props) => {
         stroke-linecap="round"
         stroke-linejoin="round"
         d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
+      />
+    </svg>
+  );
+};
+
+export const UserDelOutline: Component<{ class: string }> = (props) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class={props.class}>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
       />
     </svg>
   );
@@ -87,18 +135,6 @@ export const ClipOutline: Component<{ class: string }> = (props) => {
         stroke-linecap="round"
         stroke-linejoin="round"
         d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"
-      />
-    </svg>
-  );
-};
-
-export const EnvelopeOutline: Component<{ class?: string }> = (props) => {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class={props.class || "h-5 w-5"}>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
       />
     </svg>
   );
@@ -194,7 +230,7 @@ export const DownloadOutline: Component<{ class: string }> = (props) => {
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
-        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+        d="M12 9.75v6.75m0 0l-3-3m3 3l3-3m-8.25 6a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
       />
     </svg>
   );
@@ -213,26 +249,6 @@ export const SettingOutline: Component<{ class: string }> = (props) => {
   );
 };
 
-export const SwitchOutline: Component<{ class: string }> = (props) => {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class={props.class}>
-      <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-    </svg>
-  );
-};
-
-export const LogoutOutline: Component<{ class?: string }> = (props) => {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class={props.class || "h-5 w-5"}>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-      />
-    </svg>
-  );
-};
-
 export const Spin: Component<{ class: string }> = (props) => {
   return (
     <svg aria-hidden="true" role="status" class={props.class} viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -243,27 +259,6 @@ export const Spin: Component<{ class: string }> = (props) => {
       <path
         d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
         fill="currentColor"
-      />
-    </svg>
-  );
-};
-
-export const SpinProgress: Component<{ class: string; percent: number }> = (props) => {
-  const circumference = 18 * 2 * Math.PI;
-  return (
-    <svg class={props.class}>
-      <circle class="text-gray-300" stroke-width="8" stroke="currentColor" fill="transparent" r="18" cx="20" cy="20" />
-      <circle
-        class="text-sky-600"
-        stroke-width="8"
-        stroke-dasharray={`${circumference}`}
-        stroke-dashoffset={`${circumference - (props.percent / 100) * circumference}`}
-        stroke-linecap="round"
-        stroke="currentColor"
-        fill="transparent"
-        r="18"
-        cx="20"
-        cy="20"
       />
     </svg>
   );

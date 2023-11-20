@@ -3,12 +3,12 @@ import { createStore } from "solid-js/store";
 import { useNavigate } from "@solidjs/router";
 import { useAppContext } from "@/AppContext";
 import { LoginConfig } from "@/api";
-import { useFetchAuth } from "./fetch";
+import useAuthFetch from "./useAuthFetch";
 
 export const useLogin = (isAdmin: boolean) => {
   const [state, { signIn, signOut, setToast }] = useAppContext();
   const navigate = useNavigate();
-  const login = useFetchAuth(LoginConfig);
+  const login = useAuthFetch(LoginConfig);
 
   const [loading, setLoading] = createSignal(false);
   const [fields, setFields] = createStore({ username: "", password: "" });

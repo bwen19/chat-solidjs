@@ -3,7 +3,7 @@ import { createStore, produce } from "solid-js/store";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
 import { ClientEvent } from "@/api";
-import { UserCandidate } from "./rooms.service";
+import { UserCandidate } from "../Chat.Widget";
 
 export const useAddMembers = () => {
   const [_, { setToast }] = useAppContext();
@@ -13,7 +13,7 @@ export const useAddMembers = () => {
     candidates: [],
   });
 
-  const membersId = createMemo(() => {
+  const roomMembersId = createMemo(() => {
     const room = homeState.rooms.find((r) => r.id === homeState.currRoom);
     return room?.members?.map((m) => m.id) || [];
   });
@@ -33,7 +33,7 @@ export const useAddMembers = () => {
         for (let i of friendSet) {
           const friend = homeState.friends.find((x) => x.id === i);
           if (friend) {
-            if (membersId().includes(friend.id)) {
+            if (roomMembersId().includes(friend.id)) {
               s.candidates.push({ id: friend.id, name: friend.nickname, avatar: friend.avatar, selected: true, fixed: true });
             } else {
               s.candidates.push({ id: friend.id, name: friend.nickname, avatar: friend.avatar, selected: false, fixed: false });
@@ -63,7 +63,7 @@ export const useAddMembers = () => {
     );
   };
 
-  const addMembers = async () => {
+  const addMembers = () => {
     const membersId = newMembers.candidates.filter((x) => x.selected && !x.fixed).map((x) => x.id);
     if (membersId.length === 0) {
       setToast("人数不能为空", "error");

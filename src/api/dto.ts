@@ -95,6 +95,12 @@ export type SendFileResponse = {
   fileUrl: string;
 };
 
+export type HubStatusResponse = {
+  numUsers: number;
+  numClients: number;
+  numRooms: number;
+};
+
 // ============================== // Room // ============================== //
 
 export type NewRoomRequest = {
@@ -104,6 +110,11 @@ export type NewRoomRequest = {
 
 export type NewRoomResponse = {
   room: RoomInfo;
+};
+
+export type ChangeCoverResponse = {
+  roomId: number;
+  cover: string;
 };
 
 export type UpdateRoomResquest = {

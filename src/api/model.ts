@@ -45,7 +45,7 @@ export type RoomInfo = {
   messages: MessageInfo[];
 };
 
-export type MemberRank = "owner" | "manager" | "member";
+export type MemberRank = "owner" | "member";
 
 export type MemberInfo = {
   id: number;

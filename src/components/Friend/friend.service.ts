@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 import { ClientEvent, FindUserConfig, UserInfo } from "@/api";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { useFetchPrivate } from "@/utils/fetch";
+import usePrivateFetch from "@/utils/usePrivateFetch";
 
 export const useFriend = () => {
   const [_, { sendMessage }] = useHomeContext();
@@ -32,7 +32,7 @@ export const useFriend = () => {
 
 export const useFindUser = () => {
   const [_, { setToast }] = useAppContext();
-  const findUser = useFetchPrivate(FindUserConfig);
+  const findUser = usePrivateFetch(FindUserConfig);
 
   const [searched, setSearched] = createSignal<UserInfo>();
 

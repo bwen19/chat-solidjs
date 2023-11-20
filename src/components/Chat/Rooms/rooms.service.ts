@@ -3,19 +3,12 @@ import { createStore, produce } from "solid-js/store";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
 import { ClientEvent } from "@/api";
-
-export type UserCandidate = {
-  id: number;
-  name: string;
-  avatar: string;
-  selected: boolean;
-  fixed: boolean;
-};
+import { UserCandidate } from "../Chat.Widget";
 
 export const useNewRoom = () => {
   const [state, { setToast }] = useAppContext();
   const [homeState, { sendMessage }] = useHomeContext();
-  const [newRoom, setNewRoom] = createStore({
+  const [newRoom, setNewRoom] = createStore<{ total: number; name: string; candidates: UserCandidate[] }>({
     total: 0,
     name: "",
     candidates: [],

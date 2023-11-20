@@ -2,12 +2,12 @@ import { Accessor, createSignal, JSX } from "solid-js";
 import { createStore } from "solid-js/store";
 import { ChangeAvatarConfig, ChangePasswordConfig, UpdateUserConfig } from "@/api";
 import { useAppContext } from "@/AppContext";
-import { useFetchPrivate } from "@/utils/fetch";
-import { useUpload } from "@/utils/upload";
+import useUpload from "@/utils/useUpload";
+import usePrivateFetch from "@/utils/usePrivateFetch";
 
 export const useChangeAvatar = () => {
   const [state, { updateState, setToast }] = useAppContext();
-  const { percentage, uploadFile } = useUpload(ChangeAvatarConfig);
+  const uploadAvatar = useUpload(ChangeAvatarConfig);
 
   const handleChangeAvatar: JSX.EventHandler<HTMLInputElement, Event> = async (ev) => {
     const avatarFile = ev.currentTarget.files[0];
@@ -18,17 +18,17 @@ export const useChangeAvatar = () => {
       return;
     }
 
-    const { avatar } = await uploadFile(avatarFile);
+    const { avatar } = await uploadAvatar(avatarFile);
     updateState({ ...state.user, avatar });
     setToast("头像更新成功", "success");
   };
 
-  return { percentage, handleChangeAvatar };
+  return handleChangeAvatar;
 };
 
 export const useUpdateProfile = () => {
   const [state, { updateState, setToast }] = useAppContext();
-  const updateUser = useFetchPrivate(UpdateUserConfig);
+  const updateUser = usePrivateFetch(UpdateUserConfig);
 
   const [loading, setLoading] = createSignal(false);
   const [fields, setFields] = createStore({ nickname: "" });
@@ -63,7 +63,7 @@ export const useUpdateProfile = () => {
 
 export const useChangePassword = () => {
   const [_, { setToast }] = useAppContext();
-  const changePassword = useFetchPrivate(ChangePasswordConfig);
+  const changePassword = usePrivateFetch(ChangePasswordConfig);
 
   const [loading, setLoading] = createSignal(false);
   const [fields, setFields] = createStore({ oldPassword: "", newPassword: "" });

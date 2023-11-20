@@ -9,7 +9,6 @@ import {
   ListUsersResponse,
   ListUsersRequest,
   FindUserResponse,
-  SendFileResponse,
 } from "./dto";
 
 export const CreateUserConfig: ApiConfig<CreateUserResponse, CreateUserRequest> = {
@@ -47,9 +46,4 @@ export const FindUserConfig: ApiConfig<FindUserResponse, string> = {
   url: "/api/user/name",
   method: "GET",
   path: true,
-};
-
-export const SendFileConfig: ApiConfig<SendFileResponse> = {
-  url: "/api/message/file",
-  method: "POST",
 };

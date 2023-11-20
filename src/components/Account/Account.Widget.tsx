@@ -1,11 +1,11 @@
-import { Accessor, Component, ParentComponent, Show, createSignal } from "solid-js";
+import { Accessor, Component } from "solid-js";
 import { useAppContext } from "@/AppContext";
 import { Avatar, Modal, UploadOutline } from "@/components/common";
 import { useChangeAvatar, useChangePassword, useUpdateProfile } from "./account.service";
 
 export const ProfileModal: Component<{ onClose: Accessor<void> }> = (props) => {
   const [state] = useAppContext();
-  const { percentage, handleChangeAvatar } = useChangeAvatar();
+  const handleChangeAvatar = useChangeAvatar();
   const { loading, setFields, handleUpdateProfile } = useUpdateProfile();
 
   return (
@@ -53,24 +53,6 @@ export const ProfileModal: Component<{ onClose: Accessor<void> }> = (props) => {
         </form>
       </div>
     </Modal>
-  );
-};
-
-export const PasswordModalWrapper: ParentComponent<{ onClick: Accessor<void> }> = (props) => {
-  const [open, setOpen] = createSignal(false);
-
-  const onOpen = () => {
-    setOpen(true);
-    props.onClick();
-  };
-
-  return (
-    <div onClick={onOpen}>
-      {props.children}
-      <Show when={open()}>
-        <PasswordModal onClose={() => setOpen(false)} />
-      </Show>
-    </div>
   );
 };
 

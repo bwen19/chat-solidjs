@@ -2,7 +2,7 @@ import { Accessor, JSX, createEffect, createSignal, on } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { useAppContext } from "@/AppContext";
 import { CreateUserConfig, DeleteUserConfig, ListUsersConfig, UpdateUserConfig, UpdateUserRequest, UserInfo } from "@/api";
-import { useFetchPrivate } from "@/utils/fetch";
+import usePrivateFetch from "@/utils/usePrivateFetch";
 
 type UsersData = {
   status: "Idle" | "Fetching" | "Failed" | "Done";
@@ -51,7 +51,7 @@ export const useListUsers = () => {
     }
   };
 
-  const listUsers = useFetchPrivate(ListUsersConfig);
+  const listUsers = usePrivateFetch(ListUsersConfig);
 
   const reload = () => setUsers("status", "Idle");
 
@@ -92,7 +92,7 @@ export const useListUsers = () => {
 
 export const useDeleteUser = (cb: Accessor<void>) => {
   const [_, { setToast }] = useAppContext();
-  const deleteUser = useFetchPrivate(DeleteUserConfig);
+  const deleteUser = usePrivateFetch(DeleteUserConfig);
 
   const handleDeleteUser = async (userId: number) => {
     try {
@@ -110,7 +110,7 @@ export const useDeleteUser = (cb: Accessor<void>) => {
 
 export const useCreateUser = (cb: Accessor<void>) => {
   const [_, { setToast }] = useAppContext();
-  const createUser = useFetchPrivate(CreateUserConfig);
+  const createUser = usePrivateFetch(CreateUserConfig);
 
   const [loading, setLoading] = createSignal(false);
   const [fields, setFields] = createStore({ username: "", password: "", role: "user" });
@@ -141,7 +141,7 @@ export const useCreateUser = (cb: Accessor<void>) => {
 
 export const useUpdateUser = (user: UserInfo, cb: Accessor<void>) => {
   const [_, { setToast }] = useAppContext();
-  const updateUser = useFetchPrivate(UpdateUserConfig);
+  const updateUser = usePrivateFetch(UpdateUserConfig);
 
   const [loading, setLoading] = createSignal(false);
   const [fields, setFields] = createStore({

@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 import { useHomeContext } from "@/pages/Home/HomeContext";
 import { ClientEvent, SendFileConfig } from "@/api";
-import { useUpload } from "@/utils/upload";
+import useUpload from "@/utils/useUpload";
 
 export const useSendMessage = () => {
   const [homeState, { sendMessage }] = useHomeContext();
@@ -27,11 +27,16 @@ export const useSendMessage = () => {
 
 export const useSendFile = () => {
   const [homeState, { sendMessage }] = useHomeContext();
-  const { percentage, uploadFile } = useUpload(SendFileConfig);
+  const uploadFile = useUpload(SendFileConfig);
+
+  const [loading, setLoading] = createSignal(false);
 
   const handleSendFile = async (file: File) => {
     try {
+      setLoading(true);
       const { fileUrl } = await uploadFile(file);
+      setLoading(false);
+
       const evt: ClientEvent = {
         action: "new-message",
         data: {
@@ -46,5 +51,5 @@ export const useSendFile = () => {
     }
   };
 
-  return { percentage, handleSendFile };
+  return { loading, handleSendFile };
 };

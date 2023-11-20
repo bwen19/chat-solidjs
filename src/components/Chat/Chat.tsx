@@ -1,15 +1,24 @@
 import { Component, createEffect, createMemo, createSignal, on, Show } from "solid-js";
+import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { Avatar, ChatOutline, CloseOutline, MenuOutline } from "../common";
+import { Avatar, ChatOutline, CloseOutline, EditSolid, MenuOutline } from "../common";
 import Members from "./Members";
 import Messages from "./Messages";
 import Rooms from "./Rooms";
+import { UpdateRoomModalWrapper } from "./Chat.Widget";
 
 const ChatPage: Component = () => {
+  const [state] = useAppContext();
   const [homeState] = useHomeContext();
-  const [openMore, setOpenMore] = createSignal(false);
 
   const room = createMemo(() => homeState.rooms.find((r) => r.id === homeState.currRoom));
+  const members = createMemo(() => room()?.members || []);
+  const rank = createMemo(() => {
+    const member = members().find((mb) => mb.id === state.user.id);
+    return member?.rank || "member";
+  });
+
+  const [openMore, setOpenMore] = createSignal(false);
 
   createEffect(
     on(
@@ -54,10 +63,19 @@ const ChatPage: Component = () => {
               </div>
               <div class="flex flex-col items-center space-y-3 border-b py-3">
                 <Avatar src={room().cover} class="h-20 w-20 shrink-0 rounded-full" />
-                <p class="font-semibold text-gray-700">{room().name}</p>
+                <div class="flex items-center space-x-2">
+                  <p class="font-semibold text-gray-700">{room().name}</p>
+                  <Show when={rank() === "owner"}>
+                    <UpdateRoomModalWrapper room={room()}>
+                      <div class="cursor-pointer rounded-full text-sky-600 active:text-sky-500">
+                        <EditSolid class="h-4 w-4" />
+                      </div>
+                    </UpdateRoomModalWrapper>
+                  </Show>
+                </div>
               </div>
               <Show when={room().category === "public"}>
-                <Members />
+                <Members members={members()} rank={rank()} />
               </Show>
             </div>
           </div>

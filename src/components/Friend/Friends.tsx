@@ -2,7 +2,7 @@ import { Component, createMemo, createSignal, For, Show } from "solid-js";
 import { FriendInfo } from "@/api";
 import { useHomeContext } from "@/pages/Home/HomeContext";
 import { Avatar, SearchBox, AddOutline, UserAddSolid } from "../common";
-import { AddFriendModalWrapper } from "./Friend.Widgets";
+import { AddFriendModalWrapper } from "./Friend.Widget";
 
 const FriendItem: Component<{ item: FriendInfo }> = (props) => {
   const [homeState, { navFriend }] = useHomeContext();

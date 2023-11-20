@@ -1,6 +1,6 @@
 import { Component, createEffect, createMemo, For, JSX, on, Show } from "solid-js";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { EmojiPicker, ClipOutline, SmileOutline, SendSolid, SpinProgress } from "../common";
+import { EmojiPicker, ClipOutline, SmileOutline, SendSolid, Spin } from "@/components/common";
 import { useSendMessage, useSendFile } from "./messages.service";
 import MessageItem from "./MessageItem";
 
@@ -26,8 +26,9 @@ const Messages: Component = () => {
   };
   createEffect(on([() => messages().length, () => homeState.currPage], () => scrollToBottom()));
 
+  const { loading, handleSendFile } = useSendFile();
+
   let inputRef: HTMLInputElement | undefined;
-  const { percentage, handleSendFile } = useSendFile();
   const handleChange: JSX.EventHandler<HTMLInputElement, Event> = async (ev) => {
     const file = ev.currentTarget.files[0];
     if (!file) return;
@@ -41,15 +42,14 @@ const Messages: Component = () => {
         <For each={messages()}>{(item) => <MessageItem item={item} />}</For>
       </div>
       <div class="relative flex h-16 shrink-0 items-center justify-center border-t px-4">
-        <Show when={percentage() > 0}>
-          <div class="absolute -top-12 left-5 inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full">
-            <SpinProgress class="h-10 w-10" percent={percentage()} />
-            <span class="absolute text-sm text-sky-600">{percentage()}</span>
+        <Show when={loading()}>
+          <div class="absolute -top-9 left-8 inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full">
+            <Spin class="h-5 w-5 animate-spin text-teal-600" />
           </div>
         </Show>
         <label for="send-file" class="mx-2 cursor-pointer rounded-full p-1 text-gray-400 hover:text-sky-600 active:text-gray-400">
           <ClipOutline class="h-5 w-5" />
-          <input disabled={percentage() > 0} ref={inputRef} onChange={handleChange} id="send-file" type="file" class="hidden" />
+          <input disabled={loading()} ref={inputRef} onChange={handleChange} id="send-file" type="file" class="hidden" />
         </label>
 
         <input

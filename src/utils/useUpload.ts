@@ -1,7 +1,10 @@
 import { ApiConfig } from "@/api";
 import { handleResponse } from "./useAuthFetch";
+import { useAppContext } from "@/AppContext";
 
 const useUpload = <T, P>(config: ApiConfig<T, P>) => {
+  const [state] = useAppContext();
+
   const uploadFile = async (file: File, param?: P): Promise<T> => {
     const formData = new FormData();
     formData.append("file", file);
@@ -10,7 +13,7 @@ const useUpload = <T, P>(config: ApiConfig<T, P>) => {
 
     return fetch(url, {
       method: config.method,
-      credentials: "same-origin",
+      headers: { Authorization: `Bearer ${state.refreshToken}` },
       body: formData,
     }).then((rsp) => handleResponse<T>(rsp));
   };

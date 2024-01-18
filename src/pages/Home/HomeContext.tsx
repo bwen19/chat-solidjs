@@ -32,7 +32,7 @@ type HomeContextValue = [
 const HomeContext = createContext<HomeContextValue>();
 
 export const HomeContextProvider: ParentComponent = (props) => {
-  const [_, { setToast }] = useAppContext();
+  const [state, { setToast }] = useAppContext();
   const [homeState, setHomeState] = createStore<HomeContextState>({
     currPage: "chat",
     currRoom: 0,
@@ -64,7 +64,7 @@ export const HomeContextProvider: ParentComponent = (props) => {
   const ws = new WebSocketService(setHomeState, setToast);
   const sendMessage = (evt: ClientEvent) => ws.sendWsMessage(evt);
 
-  onMount(() => ws.connect(homeState.today));
+  onMount(() => ws.connect(homeState.today, state.accessToken));
   onCleanup(() => ws.disconnect());
 
   return <HomeContext.Provider value={[homeState, { navHome, navRoom, navFriend, sendMessage }]}>{props.children}</HomeContext.Provider>;

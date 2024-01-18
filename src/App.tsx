@@ -1,19 +1,13 @@
-import type { Component } from "solid-js";
-import { Router, useRoutes } from "@solidjs/router";
+import type { ParentComponent } from "solid-js";
 import { AppContextProvider } from "./AppContext";
 import { Toast } from "./components/common";
-import { routes } from "./pages";
 
-const App: Component = () => {
-  const Routes = useRoutes(routes);
-
+const App: ParentComponent = (props) => {
   return (
-    <Router>
-      <AppContextProvider>
-        <Toast />
-        <Routes />
-      </AppContextProvider>
-    </Router>
+    <AppContextProvider>
+      <Toast />
+      {props.children}
+    </AppContextProvider>
   );
 };
 

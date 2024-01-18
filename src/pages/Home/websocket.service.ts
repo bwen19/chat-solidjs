@@ -30,9 +30,9 @@ export class WebSocketService {
     this.setToast = setToast;
   }
 
-  connect(end_time: Date) {
+  connect(end_time: Date, accessToken: string) {
     const wsProtocol = location.protocol === "https:" ? "wss:" : "ws:";
-    this.wsInstance = new WebSocket(`${wsProtocol}//${location.host}/ws`);
+    this.wsInstance = new WebSocket(`${wsProtocol}//${location.host}/ws`, ["chat", accessToken]);
 
     this.wsInstance.onopen = () => {
       this.reconnectable = true;
@@ -44,7 +44,7 @@ export class WebSocketService {
       if (ev.code !== 1000 && this.reconnectable) {
         this.reconnectable = false;
         console.error("WebSocket disconnected:", ev.code, ev.reason);
-        setTimeout(() => this.connect(end_time), 1000);
+        setTimeout(() => this.connect(end_time, accessToken), 3000);
       } else {
         this.setHomeState("disconnected", true);
         if (ev.reason) this.setToast(ev.reason, "error");

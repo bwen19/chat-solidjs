@@ -1,3 +1,4 @@
+import { useAppContext } from "@/AppContext";
 import { ApiConfig } from "@/api";
 
 export const handleResponse = async <D>(rsp: Response): Promise<D> => {
@@ -17,11 +18,12 @@ export const handleResponse = async <D>(rsp: Response): Promise<D> => {
 };
 
 const useAuthFetch = <T, P>(config: ApiConfig<T, P>) => {
+  const [state] = useAppContext();
+
   const sendAuthRequest = async (param?: P): Promise<T> => {
     return fetch(config.url, {
       method: config.method,
-      headers: { "Content-Type": "application/json" },
-      credentials: "same-origin",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${state.refreshToken}` },
       body: param && JSON.stringify(param),
     }).then((rsp) => handleResponse<T>(rsp));
   };

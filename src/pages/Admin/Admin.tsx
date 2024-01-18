@@ -1,5 +1,5 @@
-import { Component, For } from "solid-js";
-import { A, Outlet } from "@solidjs/router";
+import { Component, For, ParentComponent } from "solid-js";
+import { A } from "@solidjs/router";
 import { Avatar, RoleBanner, FriendOutline, HomeOutline, Logo, PowerOutline } from "@/components/common";
 import { useAppContext } from "@/AppContext";
 import { LogoutModalWrapper } from "@/components";
@@ -43,7 +43,7 @@ const MenuItem: Component<{ item: MenuInfo }> = (props) => {
   );
 };
 
-const Admin: Component = () => {
+const Admin: ParentComponent = (props) => {
   const [state] = useAppContext();
 
   return (
@@ -84,7 +84,7 @@ const Admin: Component = () => {
       </div>
 
       <div class="ml-14 flex min-h-full flex-col bg-gray-100 lg:ml-72">
-        <Outlet />
+        {props.children}
       </div>
     </div>
   );

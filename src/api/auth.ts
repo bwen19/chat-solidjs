@@ -1,12 +1,12 @@
 import { ApiConfig } from "./model";
-import { LoginResponse, LoginRequest, AutoLoginRequest, RenewTokenResponse } from "./dto";
+import { LoginResponse, LoginRequest, AutoLoginRequest, RenewTokenResponse, AutoLoginResponse } from "./dto";
 
 export const LoginConfig: ApiConfig<LoginResponse, LoginRequest> = {
   url: "/api/auth/login",
   method: "POST",
 };
 
-export const AutoLoginConfig: ApiConfig<LoginResponse, AutoLoginRequest> = {
+export const AutoLoginConfig: ApiConfig<AutoLoginResponse, AutoLoginRequest> = {
   url: "/api/auth/auto-login",
   method: "POST",
 };

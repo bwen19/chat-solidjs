@@ -11,10 +11,16 @@ export type LoginRequest = {
 export type LoginResponse = {
   user: UserInfo;
   accessToken: string;
+  refreshToken: string;
 };
 
 export type AutoLoginRequest = {
   isAdmin: boolean;
+};
+
+export type AutoLoginResponse = {
+  user: UserInfo;
+  accessToken: string;
 };
 
 export type RenewTokenResponse = {

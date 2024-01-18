@@ -25,9 +25,9 @@ export const useLogin = (isAdmin: boolean) => {
         isAdmin: isAdmin,
       });
 
-      signIn(rsp.user, rsp.accessToken);
+      signIn(rsp);
 
-      if (isAdmin) navigate("/admin");
+      if (isAdmin) navigate("/admin/dashboard");
       else navigate("/");
     } catch (err) {
       if (err instanceof Error && err.message) {
@@ -40,8 +40,8 @@ export const useLogin = (isAdmin: boolean) => {
   onMount(() => {
     if (isAdmin && state.isLoggedIn && state.user?.role === "user") {
       signOut();
-    } else if (state.isLoggedIn || state.persist) {
-      if (isAdmin) navigate("/admin");
+    } else if (state.isLoggedIn || state.refreshToken) {
+      if (isAdmin) navigate("/admin/dashboard");
       else navigate("/");
     }
   });

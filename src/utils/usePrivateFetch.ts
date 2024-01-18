@@ -25,8 +25,7 @@ const usePrivateFetch = <T, P>(config: ApiConfig<T, P>) => {
 
     return fetch(url, {
       method,
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${state.token}` },
-      credentials: "omit",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${state.accessToken}` },
       body,
     }).then((rsp) => {
       if (rsp.status === 203) {
@@ -41,7 +40,6 @@ const usePrivateFetch = <T, P>(config: ApiConfig<T, P>) => {
     return fetch(url, {
       method,
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      credentials: "omit",
       body,
     }).then((rsp) => handleResponse<T>(rsp));
   };

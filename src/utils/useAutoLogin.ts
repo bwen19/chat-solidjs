@@ -4,16 +4,16 @@ import { AutoLoginConfig } from "@/api";
 import useAuthFetch from "./useAuthFetch";
 
 const useAutoLogin = (isAdmin: boolean) => {
-  const [state, { signIn, signOut, setToast }] = useAppContext();
+  const [state, { autoIn, signOut, setToast }] = useAppContext();
   const autoLogin = useAuthFetch(AutoLoginConfig);
 
   const [loading, setLoading] = createSignal(true);
 
   onMount(async () => {
-    if (state.persist && !state.isLoggedIn) {
+    if (state.refreshToken && !state.isLoggedIn) {
       try {
         const rsp = await autoLogin({ isAdmin });
-        signIn(rsp.user, rsp.accessToken);
+        autoIn(rsp);
       } catch (err) {
         setToast("身份认证已失效，请重新登录", "error");
         signOut();

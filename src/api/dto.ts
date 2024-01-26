@@ -90,6 +90,7 @@ export type InitializeResponse = {
 export type NewMessageRequest = {
   roomId: number;
   content: string;
+  fileUrl: string;
   kind: string;
 };
 
@@ -98,7 +99,9 @@ export type NewMessageResponse = {
 };
 
 export type SendFileResponse = {
+  content: string;
   fileUrl: string;
+  kind: string;
 };
 
 export type HubStatusResponse = {

@@ -15,6 +15,7 @@ export const useSendMessage = () => {
         data: {
           roomId: homeState.currRoom,
           content: content(),
+          fileUrl: "none",
           kind: "text",
         },
       };
@@ -36,14 +37,15 @@ export const useSendFile = () => {
   const handleSendFile = async (file: File) => {
     try {
       setLoading(true);
-      const { fileUrl } = await uploadFile(file);
+      const { content, fileUrl, kind } = await uploadFile(file);
 
       const evt: ClientEvent = {
         action: "new-message",
         data: {
           roomId: homeState.currRoom,
-          content: `${fileUrl} ${file.name}`,
-          kind: "file",
+          content,
+          fileUrl,
+          kind,
         },
       };
       sendMessage(evt);

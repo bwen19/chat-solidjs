@@ -24,6 +24,7 @@ const Messages: Component = () => {
   const scrollToBottom = () => {
     if (divRef) divRef.scrollTo(0, divRef.scrollHeight);
   };
+
   createEffect(on([() => messages().length, () => homeState.currPage], () => scrollToBottom()));
 
   const { loading, handleSendFile } = useSendFile();
@@ -39,7 +40,7 @@ const Messages: Component = () => {
   return (
     <>
       <div ref={divRef} class="hover:scrollbar no-scrollbar flex grow flex-col space-y-5 overflow-x-hidden overflow-y-scroll p-3">
-        <For each={messages()}>{(item) => <MessageItem item={item} />}</For>
+        <For each={messages()}>{(item) => <MessageItem item={item} onImageLoad={scrollToBottom} />}</For>
       </div>
       <div class="relative flex h-16 shrink-0 items-center justify-center border-t px-4">
         <Show when={loading()}>

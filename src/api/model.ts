@@ -40,7 +40,7 @@ export type RoomInfo = {
   cover: string;
   category: RoomCategory;
   unreads: number;
-  createAt: string;
+  createAt: Date;
   members: MemberInfo[];
   messages: MessageInfo[];
 };
@@ -55,7 +55,7 @@ export type MemberInfo = {
   joinAt: Date;
 };
 
-export type MessageKind = "text" | "file";
+export type MessageKind = "text" | "image" | "file";
 
 export type MessageInfo = {
   roomId: number;
@@ -63,6 +63,7 @@ export type MessageInfo = {
   name: string;
   avatar: string;
   content: string;
+  fileUrl: string;
   kind: MessageKind;
   divide: boolean;
   sendAt: Date;

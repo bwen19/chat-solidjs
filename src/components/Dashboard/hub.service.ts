@@ -13,7 +13,7 @@ export const useHubStatus = () => {
 
   const reload = async () => {
     try {
-      const rsp = await getStatus();
+      const rsp = await getStatus(null);
       setStatus(rsp);
     } catch (err) {
       console.error(err);

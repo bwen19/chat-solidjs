@@ -1,7 +1,7 @@
 import { Component, Show, createEffect } from "solid-js";
 import { useAppContext } from "@/AppContext";
 import { Modal, WarnOutline } from "@/components/common";
-import { useLogout } from "@/utils/useLogout";
+import { useLogout } from "@/utils/useAuthFetch";
 import { useHomeContext } from "./HomeContext";
 
 export const DisconnectionModal: Component = () => {

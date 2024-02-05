@@ -1,8 +1,8 @@
 import { createContext, onCleanup, onMount, ParentComponent, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { ClientEvent, FriendInfo, RoomInfo } from "@/api";
+import useRenewToken from "@/utils/useRenewToken";
 import { useAppContext } from "@/AppContext";
-import { todayEndTime } from "@/utils/time";
 import { WebSocketService } from "./websocket.service";
 
 type PageName = "chat" | "friend";
@@ -16,7 +16,6 @@ export type HomeContextState = {
   totalUnreads: number;
   numNewFriends: number;
   disconnected: boolean;
-  today: Date;
 };
 
 type HomeContextValue = [
@@ -33,6 +32,8 @@ const HomeContext = createContext<HomeContextValue>();
 
 export const HomeContextProvider: ParentComponent = (props) => {
   const [state, { setToast }] = useAppContext();
+  const getAccessToken = useRenewToken();
+
   const [homeState, setHomeState] = createStore<HomeContextState>({
     currPage: "chat",
     currRoom: 0,
@@ -42,7 +43,6 @@ export const HomeContextProvider: ParentComponent = (props) => {
     totalUnreads: 0,
     numNewFriends: 0,
     disconnected: false,
-    today: todayEndTime(),
   });
 
   const navHome = (pageName: PageName) => setHomeState("currPage", pageName);
@@ -64,7 +64,13 @@ export const HomeContextProvider: ParentComponent = (props) => {
   const ws = new WebSocketService(setHomeState, setToast);
   const sendMessage = (evt: ClientEvent) => ws.sendWsMessage(evt);
 
-  onMount(() => ws.connect(homeState.today, state.accessToken));
+  onMount(async () => {
+    const now = new Date();
+    const date = new Date(state.expireAt);
+    const accessToken = date < now ? await getAccessToken() : state.accessToken;
+    ws.connect(accessToken);
+  });
+
   onCleanup(() => ws.disconnect());
 
   return <HomeContext.Provider value={[homeState, { navHome, navRoom, navFriend, sendMessage }]}>{props.children}</HomeContext.Provider>;

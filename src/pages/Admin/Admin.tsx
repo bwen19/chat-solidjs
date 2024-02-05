@@ -83,9 +83,7 @@ const Admin: ParentComponent = (props) => {
         </div>
       </div>
 
-      <div class="ml-14 flex min-h-full flex-col bg-gray-100 lg:ml-72">
-        {props.children}
-      </div>
+      <div class="ml-14 flex min-h-full flex-col bg-gray-100 lg:ml-72">{props.children}</div>
     </div>
   );
 };

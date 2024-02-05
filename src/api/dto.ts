@@ -12,19 +12,26 @@ export type LoginResponse = {
   user: UserInfo;
   accessToken: string;
   refreshToken: string;
+  expireAt: Date;
 };
 
 export type AutoLoginRequest = {
+  refreshToken: string;
   isAdmin: boolean;
 };
 
-export type AutoLoginResponse = {
-  user: UserInfo;
-  accessToken: string;
+export type RenewTokenRequest = {
+  refreshToken: string;
 };
 
 export type RenewTokenResponse = {
   accessToken: string;
+  refreshToken: string;
+  expireAt: Date;
+};
+
+export type LogoutRequest = {
+  refreshToken: string;
 };
 
 // ============================== // User // ============================== //
@@ -78,9 +85,7 @@ export type FindUserResponse = {
 
 // ============================== // Message // ============================== //
 
-export type InitializeRequest = {
-  timestamp: number;
-};
+export type InitializeRequest = {};
 
 export type InitializeResponse = {
   rooms: RoomInfo[];

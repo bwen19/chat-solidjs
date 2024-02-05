@@ -22,7 +22,7 @@ const Toast: Component = () => {
               <InfoOutline class="h-5 w-5" />
             </Show>
           </div>
-          <span class="text-sm text-white line-clamp-1">{state.toast.message}</span>
+          <span class="line-clamp-1 text-sm text-white">{state.toast.message}</span>
           <div onclick={closeToast} class="cursor-pointer text-gray-50 hover:text-gray-800">
             <CloseOutline class="h-5 w-5" />
           </div>

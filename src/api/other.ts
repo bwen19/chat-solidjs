@@ -12,7 +12,7 @@ export const ChangeCoverConfig: ApiConfig<unknown, number> = {
   path: true,
 };
 
-export const HubStatusConfig: ApiConfig<HubStatusResponse, unknown> = {
+export const HubStatusConfig: ApiConfig<HubStatusResponse> = {
   url: "/api/room/status",
   method: "GET",
 };

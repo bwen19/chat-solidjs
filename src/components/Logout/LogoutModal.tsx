@@ -1,5 +1,5 @@
 import { Accessor, ParentComponent, Show, createSignal } from "solid-js";
-import { useLogout } from "@/utils/useLogout";
+import { useLogout } from "@/utils/useAuthFetch";
 import { Modal, PowerOutline } from "../common";
 
 export const LogoutModalWrapper: ParentComponent = (props) => {

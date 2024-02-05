@@ -2,7 +2,7 @@ import { Accessor, Component, Match, ParentComponent, Show, Switch } from "solid
 import { MessageInfo } from "@/api";
 import { useAppContext } from "@/AppContext";
 import { useHomeContext } from "@/pages/Home/HomeContext";
-import { fmtDividerDate, fmtSendTime } from "@/utils/time";
+import { fmtDividerDate } from "@/utils/time";
 import { Avatar, DownloadOutline } from "@/components/common";
 
 // ========================// MessageItem //======================== //
@@ -13,7 +13,7 @@ const MessageItem: Component<{ item: MessageInfo; onImageLoad: Accessor<void> }>
     <>
       <Show when={props.item.divide}>
         <div class="text-center">
-          <span class="text-xs text-gray-400">{fmtDividerDate(props.item.sendAt, homeState.today)}</span>
+          <span class="text-xs text-gray-400">{fmtDividerDate(props.item.sendAt)}</span>
         </div>
       </Show>
       <Switch fallback={<MessageText item={props.item} />}>
@@ -44,10 +44,7 @@ const SenderMessage: ParentComponent<MessageItemProps> = (props) => {
       <div class="flex items-start space-x-2">
         <Avatar src={props.avatar} class="h-8 w-8 shrink-0 rounded-full" />
         <div class="grow">
-          <p class="mb-2 w-fit text-sm font-semibold text-gray-700">
-            {props.name}
-            <span class="ml-2 text-xs text-gray-400">{fmtSendTime(props.sendAt)}</span>
-          </p>
+          <p class="mb-2 w-fit text-sm font-semibold text-gray-700">{props.name}</p>
           {props.children}
         </div>
       </div>
@@ -61,10 +58,7 @@ const ReceiverMessage: ParentComponent<MessageItemProps> = (props) => {
       <div class="flex flex-row-reverse items-start space-x-2 space-x-reverse">
         <Avatar src={props.avatar} class="h-8 w-8 shrink-0 rounded-full" />
         <div class="flex grow flex-col items-end">
-          <p class="mb-2 w-fit text-sm font-semibold text-gray-700">
-            <span class="mr-2 text-xs text-gray-400">{fmtSendTime(props.sendAt)}</span>
-            {props.name}
-          </p>
+          <p class="mb-2 w-fit text-sm font-semibold text-gray-700">{props.name}</p>
           {props.children}
         </div>
       </div>

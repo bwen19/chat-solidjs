@@ -1,21 +1,22 @@
 {
   "name": "natter",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A chat web app",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "prettier": "prettier --write ."
   },
   "license": "MIT",
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/line-clamp": "^0.4.4",
-    "@types/node": "^20.11.10",
+    "@types/node": "^20.11.16",
     "autoprefixer": "^10.4.17",
     "cssnano": "^6.0.3",
     "postcss": "^8.4.33",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
@@ -23,7 +24,7 @@
     "vite-plugin-solid": "^2.9.1"
   },
   "dependencies": {
-    "@solidjs/router": "^0.10.10",
+    "@solidjs/router": "^0.11.3",
     "solid-js": "^1.8.12"
   }
 }

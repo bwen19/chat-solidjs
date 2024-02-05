@@ -37,7 +37,7 @@ export const useSendFile = () => {
   const handleSendFile = async (file: File) => {
     try {
       setLoading(true);
-      const { content, fileUrl, kind } = await uploadFile(file);
+      const { content, fileUrl, kind } = await uploadFile(file, null);
 
       const evt: ClientEvent = {
         action: "new-message",

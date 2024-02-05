@@ -1,17 +1,17 @@
 import { useAppContext } from "@/AppContext";
 import { ApiConfig } from "@/api";
-import { handleResponse } from "./useAuthFetch";
+import { handleResponse } from "./handleResponse";
 import useRenewToken from "./useRenewToken";
 
 const usePrivateFetch = <T, P>(config: ApiConfig<T, P>) => {
   const [state] = useAppContext();
-  const renewToken = useRenewToken();
+  const getAccessToken = useRenewToken();
 
-  let url = config.url;
-  let method = config.method;
-  let body: string | undefined = undefined;
+  const sendRequest = async (param: P): Promise<T> => {
+    let url = config.url;
+    let method = config.method;
+    let body: string | undefined = undefined;
 
-  const sendRequest = async (param?: P): Promise<T> => {
     if (param) {
       if (config.path) {
         url = `${config.url}/${param}`;
@@ -23,25 +23,26 @@ const usePrivateFetch = <T, P>(config: ApiConfig<T, P>) => {
       }
     }
 
-    return fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${state.accessToken}` },
-      body,
-    }).then((rsp) => {
+    try {
+      const rsp = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${state.accessToken}` },
+        body,
+      });
       if (rsp.status === 203) {
-        return renewToken<T>(tryWithNewToken);
+        const accessToken = await getAccessToken();
+        const newRsp = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+          body,
+        });
+        return handleResponse<T>(newRsp);
       } else {
         return handleResponse<T>(rsp);
       }
-    });
-  };
-
-  const tryWithNewToken = async <T>(token: string): Promise<T> => {
-    return fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body,
-    }).then((rsp) => handleResponse<T>(rsp));
+    } catch (e) {
+      throw new Error("Something went wrong");
+    }
   };
 
   return sendRequest;

@@ -37,7 +37,7 @@ const RoomItem: Component<{ item: RoomInfo }> = (props) => {
             {props.item.name}
           </p>
           <p class="shrink-0 text-xs" classList={{ "text-gray-400 group-hover:text-white": !selected() }}>
-            <Show when={latestMsg()}>{fmtLastDate(latestMsg().sendAt, homeState.today)}</Show>
+            <Show when={latestMsg()}>{fmtLastDate(latestMsg().sendAt)}</Show>
           </p>
         </div>
         <div class="mt-1 flex items-center justify-between space-x-2">

@@ -1,7 +1,7 @@
 import { ParentComponent, Show } from "solid-js";
 import { Navigate } from "@solidjs/router";
 import { useAppContext } from "@/AppContext";
-import useAutoLogin from "@/utils/useAutoLogin";
+import { useAutoLogin } from "@/utils/useAuthFetch";
 
 const HomeGuard: ParentComponent = (props) => {
   const [state] = useAppContext();

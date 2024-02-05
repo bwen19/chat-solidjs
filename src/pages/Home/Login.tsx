@@ -2,7 +2,7 @@ import { Component, Show } from "solid-js";
 import loginBgSrc from "@/assets/login-bg.jpg";
 import loginLeftSrc from "@/assets/login-left.png";
 import { LockSolid, LogoName, Spin, UserSolid } from "@/components/common";
-import { useLogin } from "@/utils/useLogin";
+import { useLogin } from "@/utils/useAuthFetch";
 
 const Login: Component = () => {
   const { loading, handleSubmit, setFields } = useLogin(false);

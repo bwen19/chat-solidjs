@@ -30,13 +30,13 @@ export class WebSocketService {
     this.setToast = setToast;
   }
 
-  connect(end_time: Date, accessToken: string) {
+  connect(accessToken: string) {
     const wsProtocol = location.protocol === "https:" ? "wss:" : "ws:";
     this.wsInstance = new WebSocket(`${wsProtocol}//${location.host}/ws`, ["chat", accessToken]);
 
     this.wsInstance.onopen = () => {
       this.reconnectable = true;
-      const evt: ClientEvent = { action: "initialize", data: { timestamp: end_time.getTime() } };
+      const evt: ClientEvent = { action: "initialize", data: {} };
       this.sendWsMessage(evt);
     };
 
@@ -44,7 +44,7 @@ export class WebSocketService {
       if (ev.code !== 1000 && this.reconnectable) {
         this.reconnectable = false;
         console.error("WebSocket disconnected:", ev.code, ev.reason);
-        setTimeout(() => this.connect(end_time, accessToken), 3000);
+        setTimeout(() => this.connect(accessToken), 3000);
       } else {
         this.setHomeState("disconnected", true);
         if (ev.reason) this.setToast(ev.reason, "error");
@@ -112,10 +112,8 @@ export class WebSocketService {
         const index = s.rooms.findIndex((x) => x.id === roomId);
         if (index !== -1) {
           const [room, _] = s.rooms.splice(index, 1);
-          const date = new Date(room.messages[room.messages.length - 1]?.sendAt);
-          if (s.today.getTime() - date.getTime() > 86400000) rsp.message.divide = true;
-
           room.messages.push(rsp.message);
+
           if (s.currPage !== "chat" || s.currRoom !== roomId) {
             room.unreads++;
             s.totalUnreads++;

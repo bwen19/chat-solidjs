@@ -1,51 +1,54 @@
-export const fmtSendTime = (dt: Date) => {
-  const date = new Date(dt);
-  return `${("0" + date.getHours()).slice(-2)}:${("0" + date.getMinutes()).slice(-2)}`;
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+const monthShortNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+const twoDigits = (n: number): string => {
+  return n >= 10 ? `${n}` : `0${n}`;
 };
 
-export const fmtDividerDate = (dt: Date, today: Date): string => {
+export const fmtDividerDate = (dt: Date): string => {
+  const now = new Date();
   const date = new Date(dt);
-  const weekday = ["日", "一", "二", "三", "四", "五", "六"][date.getDay()];
 
-  if (today.getFullYear() > date.getFullYear()) {
-    return `${date.getFullYear()}年${date.getMonth() + 1}月${("0" + date.getDate()).slice(-2)}日 星期${weekday}`;
-  } else if (today.getMonth() > date.getMonth()) {
-    return `${date.getMonth() + 1}月${("0" + date.getDate()).slice(-2)}日 星期${weekday}`;
+  const sendTime = `${twoDigits(date.getHours())}:${twoDigits(date.getMinutes())}`;
+
+  if (now.getFullYear() > date.getFullYear()) {
+    return `${date.getFullYear()}-${twoDigits(date.getMonth() + 1)}-${twoDigits(date.getDate())} ${sendTime}`;
+  } else if (now.getMonth() > date.getMonth()) {
+    return `${monthNames[date.getMonth()]} ${date.getDate()}, ${sendTime}`;
   } else {
-    const days = today.getDate() - date.getDate();
+    const days = now.getDate() - date.getDate();
     if (days === 0) {
-      return `今天 星期${weekday}`;
+      return `Today ${sendTime}`;
     } else if (days === 1) {
-      return `昨天 星期${weekday}`;
+      return `Yesterday ${sendTime}`;
     } else {
-      return `${date.getMonth() + 1}月${("0" + date.getDate()).slice(-2)}日 星期${weekday}`;
+      return `${monthNames[date.getMonth()]} ${date.getDate()}, ${sendTime}`;
     }
   }
 };
 
-export const fmtLastDate = (dt: Date, today: Date): string => {
+export const fmtLastDate = (dt: Date): string => {
+  const now = new Date();
   const date = new Date(dt);
-  if (today.getFullYear() > date.getFullYear()) {
-    return `${date.getFullYear()}年${date.getMonth() + 1}月${("0" + date.getDate()).slice(-2)}日`;
-  } else if (today.getMonth() > date.getMonth()) {
-    return `${date.getMonth() + 1}月${("0" + date.getDate()).slice(-2)}日`;
+
+  if (now.getFullYear() > date.getFullYear()) {
+    return `${date.getFullYear()}-${twoDigits(date.getMonth() + 1)}-${twoDigits(date.getDate())}`;
+  } else if (now.getMonth() > date.getMonth()) {
+    return `${monthShortNames[date.getMonth()]} ${date.getDate()}`;
   } else {
-    const days = today.getDate() - date.getDate();
+    const days = now.getDate() - date.getDate();
     if (days === 0) {
-      return `${("0" + date.getHours()).slice(-2)}:${("0" + date.getMinutes()).slice(-2)}`;
+      return `${twoDigits(date.getHours())}:${twoDigits(date.getMinutes())}`;
     } else if (days === 1) {
-      return "昨天";
+      return "Yesterday";
     } else {
-      return `${date.getMonth() + 1}月${("0" + date.getDate()).slice(-2)}日`;
+      return `${monthShortNames[date.getMonth()]} ${date.getDate()}`;
     }
   }
 };
 
 export const fmtDate = (dt: Date): string => {
   const date = new Date(dt);
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${("0" + date.getDate()).slice(-2)}`;
-};
-
-export const todayEndTime = (): Date => {
-  return new Date(new Date().setHours(23, 59, 59, 999));
+  return `${date.getFullYear()}-${twoDigits(date.getMonth() + 1)}-${twoDigits(date.getDate())}`;
 };
